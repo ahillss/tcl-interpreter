@@ -54,15 +54,15 @@ int main(int argc, char **argv) {
   struct scriptInterp i;
   scriptInitInterp(&i);
   scriptRegisterCoreCommands(&i);
-
-  // if(argc == 1) {
-  //   runREPL(&i);
-  // } else if(argc == 2) {
-  //   evalFile(&i,argv[1]);
-  // }
-
   evalFile(&i,"common.tcl");
-  evalFile(&i,"tests/b.tcl");
+  if(argc == 1) {
+    runREPL(&i);
+  } else if(argc == 2) {
+    evalFile(&i,argv[1]);
+  }
+
+
+  // evalFile(&i,"tests/b.tcl");
   // runREPL(&i);
 
 
