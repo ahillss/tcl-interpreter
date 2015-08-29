@@ -1,20 +1,20 @@
 
-#line 1 "exprParse.rl"
+#line 1 "expr.rl"
  
-#line 223 "exprParse.rl"
+#line 223 "expr.rl"
 
 
 
-#line 226 "exprParse.rl"
+#line 226 "expr.rl"
 
-#line 227 "exprParse.rl"
+#line 227 "expr.rl"
 
-#line 228 "exprParse.rl"
+#line 228 "expr.rl"
 
-#line 229 "exprParse.rl"
+#line 229 "expr.rl"
 
 
-#line 238 "exprParse.rl"
+#line 238 "expr.rl"
 
 
 #include <stdio.h>
@@ -85,11 +85,11 @@ static const short _exprParse_key_offsets[] = {
 	58, 59, 60, 63, 64, 65, 66, 67, 
 	68, 70, 71, 72, 73, 74, 75, 76, 
 	77, 78, 80, 81, 82, 83, 84, 85, 
-	87, 88, 89, 90, 92, 93, 94, 97, 
-	98, 99, 100, 101, 102, 104, 106, 145, 
-	152, 166, 173, 180, 188, 195, 199, 207, 
-	215, 223, 232, 240, 249, 253, 258, 263, 
-	268, 273, 282, 286, 294, 294
+	87, 88, 90, 91, 92, 94, 95, 96, 
+	99, 100, 101, 102, 103, 104, 106, 108, 
+	147, 154, 168, 175, 182, 190, 197, 201, 
+	209, 217, 225, 234, 242, 251, 255, 260, 
+	265, 270, 275, 280, 284, 292, 292
 };
 
 static const char _exprParse_trans_keys[] = {
@@ -104,32 +104,32 @@ static const char _exprParse_trans_keys[] = {
 	105, 101, 114, 112, 108, 109, 111, 111, 
 	111, 100, 121, 112, 111, 116, 110, 115, 
 	113, 114, 111, 103, 48, 97, 105, 120, 
-	111, 119, 97, 111, 110, 117, 105, 113, 
-	114, 110, 97, 97, 105, 100, 123, 125, 
-	91, 93, 13, 32, 33, 34, 36, 37, 
-	38, 42, 43, 45, 47, 59, 60, 61, 
-	62, 63, 91, 94, 97, 98, 99, 100, 
-	101, 102, 104, 105, 108, 109, 110, 112, 
-	114, 115, 116, 119, 123, 124, 126, 9, 
+	101, 105, 111, 119, 97, 111, 110, 117, 
+	105, 113, 114, 110, 97, 97, 105, 100, 
+	123, 125, 91, 93, 13, 32, 33, 34, 
+	36, 37, 38, 42, 43, 45, 47, 59, 
+	60, 61, 62, 63, 91, 94, 97, 98, 
+	99, 100, 101, 102, 104, 105, 108, 109, 
+	110, 112, 114, 115, 116, 119, 123, 124, 
+	126, 9, 10, 13, 32, 36, 59, 91, 
+	9, 10, 13, 32, 36, 59, 91, 95, 
+	9, 10, 48, 57, 65, 90, 97, 122, 
+	13, 32, 36, 59, 91, 9, 10, 13, 
+	32, 36, 59, 91, 9, 10, 13, 32, 
+	36, 59, 61, 91, 9, 10, 13, 32, 
+	36, 59, 91, 9, 10, 13, 32, 9, 
+	10, 13, 32, 36, 38, 59, 91, 9, 
+	10, 13, 32, 36, 42, 59, 91, 9, 
+	10, 13, 32, 36, 47, 59, 91, 9, 
 	10, 13, 32, 36, 59, 91, 9, 10, 
-	13, 32, 36, 59, 91, 95, 9, 10, 
-	48, 57, 65, 90, 97, 122, 13, 32, 
-	36, 59, 91, 9, 10, 13, 32, 36, 
-	59, 91, 9, 10, 13, 32, 36, 59, 
-	61, 91, 9, 10, 13, 32, 36, 59, 
-	91, 9, 10, 13, 32, 9, 10, 13, 
-	32, 36, 38, 59, 91, 9, 10, 13, 
-	32, 36, 42, 59, 91, 9, 10, 13, 
-	32, 36, 47, 59, 91, 9, 10, 13, 
-	32, 36, 59, 91, 9, 10, 60, 61, 
-	13, 32, 36, 59, 61, 91, 9, 10, 
-	13, 32, 36, 59, 91, 9, 10, 61, 
-	62, 13, 32, 9, 10, 13, 32, 50, 
-	9, 10, 13, 32, 104, 9, 10, 13, 
-	32, 116, 9, 10, 13, 32, 49, 9, 
-	10, 13, 32, 36, 59, 91, 101, 105, 
-	9, 10, 13, 32, 9, 10, 13, 32, 
-	36, 59, 91, 124, 9, 10, 0
+	60, 61, 13, 32, 36, 59, 61, 91, 
+	9, 10, 13, 32, 36, 59, 91, 9, 
+	10, 61, 62, 13, 32, 9, 10, 13, 
+	32, 50, 9, 10, 13, 32, 104, 9, 
+	10, 13, 32, 116, 9, 10, 13, 32, 
+	49, 9, 10, 13, 32, 103, 9, 10, 
+	13, 32, 9, 10, 13, 32, 36, 59, 
+	91, 124, 9, 10, 0
 };
 
 static const char _exprParse_single_lengths[] = {
@@ -139,11 +139,11 @@ static const char _exprParse_single_lengths[] = {
 	1, 1, 3, 1, 1, 1, 1, 1, 
 	2, 1, 1, 1, 1, 1, 1, 1, 
 	1, 2, 1, 1, 1, 1, 1, 2, 
-	1, 1, 1, 2, 1, 1, 3, 1, 
-	1, 1, 1, 1, 2, 2, 37, 5, 
-	6, 5, 5, 6, 5, 2, 6, 6, 
-	6, 5, 6, 5, 2, 3, 3, 3, 
-	3, 7, 2, 6, 0, 0
+	1, 2, 1, 1, 2, 1, 1, 3, 
+	1, 1, 1, 1, 1, 2, 2, 37, 
+	5, 6, 5, 5, 6, 5, 2, 6, 
+	6, 6, 5, 6, 5, 2, 3, 3, 
+	3, 3, 3, 2, 6, 0, 0
 };
 
 static const char _exprParse_range_lengths[] = {
@@ -154,10 +154,10 @@ static const char _exprParse_range_lengths[] = {
 	0, 0, 0, 0, 0, 0, 0, 0, 
 	0, 0, 0, 0, 0, 0, 0, 0, 
 	0, 0, 0, 0, 0, 0, 0, 0, 
-	0, 0, 0, 0, 0, 0, 1, 1, 
-	4, 1, 1, 1, 1, 1, 1, 1, 
-	1, 2, 1, 2, 1, 1, 1, 1, 
-	1, 1, 1, 1, 0, 0
+	0, 0, 0, 0, 0, 0, 0, 1, 
+	1, 4, 1, 1, 1, 1, 1, 1, 
+	1, 1, 2, 1, 2, 1, 1, 1, 
+	1, 1, 1, 1, 1, 0, 0
 };
 
 static const short _exprParse_index_offsets[] = {
@@ -167,11 +167,11 @@ static const short _exprParse_index_offsets[] = {
 	72, 74, 76, 80, 82, 84, 86, 88, 
 	90, 93, 95, 97, 99, 101, 103, 105, 
 	107, 109, 112, 114, 116, 118, 120, 122, 
-	125, 127, 129, 131, 134, 136, 138, 142, 
-	144, 146, 148, 150, 152, 155, 158, 197, 
-	204, 215, 222, 229, 237, 244, 248, 256, 
-	264, 272, 280, 288, 296, 300, 305, 310, 
-	315, 320, 329, 333, 341, 342
+	125, 127, 130, 132, 134, 137, 139, 141, 
+	145, 147, 149, 151, 153, 155, 158, 161, 
+	200, 207, 218, 225, 232, 240, 247, 251, 
+	259, 267, 275, 283, 291, 299, 303, 308, 
+	313, 318, 323, 328, 332, 340, 341
 };
 
 static const char _exprParse_indicies[] = {
@@ -191,51 +191,51 @@ static const char _exprParse_indicies[] = {
 	1, 49, 1, 25, 1, 50, 51, 1, 
 	52, 1, 49, 1, 53, 1, 54, 1, 
 	25, 1, 55, 26, 1, 25, 1, 56, 
-	1, 25, 1, 57, 58, 1, 46, 1, 
-	57, 1, 59, 52, 60, 1, 33, 1, 
-	57, 1, 59, 1, 61, 1, 37, 1, 
-	63, 64, 62, 66, 67, 65, 69, 69, 
-	70, 71, 72, 73, 74, 75, 73, 73, 
-	76, 1, 77, 78, 79, 73, 80, 73, 
-	81, 82, 83, 84, 85, 86, 87, 88, 
-	89, 90, 91, 92, 93, 94, 95, 96, 
-	97, 98, 73, 69, 68, 100, 100, 101, 
-	1, 102, 100, 99, 104, 104, 105, 1, 
-	106, 0, 104, 0, 0, 0, 103, 108, 
-	108, 109, 1, 110, 108, 107, 104, 104, 
-	105, 1, 106, 104, 103, 111, 111, 101, 
-	1, 112, 102, 111, 99, 111, 111, 101, 
-	1, 102, 111, 99, 113, 113, 113, 1, 
-	111, 111, 101, 112, 1, 102, 111, 99, 
-	111, 111, 101, 112, 1, 102, 111, 99, 
-	111, 111, 101, 112, 1, 102, 111, 99, 
-	111, 111, 101, 1, 102, 111, 112, 99, 
-	100, 100, 101, 1, 112, 102, 100, 99, 
-	111, 111, 101, 1, 102, 111, 112, 99, 
-	114, 114, 114, 1, 114, 114, 25, 114, 
-	1, 114, 114, 25, 114, 1, 114, 114, 
-	25, 114, 1, 114, 114, 115, 114, 1, 
-	100, 100, 101, 1, 102, 112, 112, 100, 
-	99, 116, 116, 116, 1, 111, 111, 101, 
-	1, 102, 112, 111, 99, 1, 1, 0
+	25, 1, 57, 1, 25, 1, 58, 59, 
+	1, 46, 1, 58, 1, 60, 52, 61, 
+	1, 33, 1, 58, 1, 60, 1, 62, 
+	1, 37, 1, 64, 65, 63, 67, 68, 
+	66, 70, 70, 71, 72, 73, 74, 75, 
+	76, 74, 74, 77, 1, 78, 79, 80, 
+	74, 81, 74, 82, 83, 84, 85, 86, 
+	87, 88, 89, 90, 91, 92, 93, 94, 
+	95, 96, 97, 98, 99, 74, 70, 69, 
+	101, 101, 102, 1, 103, 101, 100, 105, 
+	105, 106, 1, 107, 0, 105, 0, 0, 
+	0, 104, 109, 109, 110, 1, 111, 109, 
+	108, 105, 105, 106, 1, 107, 105, 104, 
+	112, 112, 102, 1, 113, 103, 112, 100, 
+	112, 112, 102, 1, 103, 112, 100, 114, 
+	114, 114, 1, 112, 112, 102, 113, 1, 
+	103, 112, 100, 112, 112, 102, 113, 1, 
+	103, 112, 100, 112, 112, 102, 113, 1, 
+	103, 112, 100, 112, 112, 102, 1, 103, 
+	112, 113, 100, 101, 101, 102, 1, 113, 
+	103, 101, 100, 112, 112, 102, 1, 103, 
+	112, 113, 100, 115, 115, 115, 1, 115, 
+	115, 25, 115, 1, 115, 115, 25, 115, 
+	1, 115, 115, 25, 115, 1, 115, 115, 
+	116, 115, 1, 115, 115, 25, 115, 1, 
+	117, 117, 117, 1, 112, 112, 102, 1, 
+	103, 113, 112, 100, 1, 1, 0
 };
 
 static const char _exprParse_trans_targs[] = {
-	64, 0, 66, 3, 69, 4, 6, 3, 
-	69, 4, 6, 5, 7, 3, 69, 4, 
-	6, 3, 69, 4, 6, 9, 10, 11, 
-	13, 76, 12, 14, 77, 16, 17, 19, 
-	20, 78, 22, 23, 24, 25, 27, 31, 
+	65, 0, 67, 3, 70, 4, 6, 3, 
+	70, 4, 6, 5, 7, 3, 70, 4, 
+	6, 3, 70, 4, 6, 9, 10, 11, 
+	13, 77, 12, 14, 78, 16, 17, 19, 
+	20, 79, 22, 23, 24, 25, 27, 31, 
 	28, 29, 30, 33, 35, 34, 36, 38, 
-	39, 40, 79, 42, 43, 45, 80, 48, 
-	50, 52, 53, 55, 56, 59, 60, 60, 
-	84, 61, 61, 85, 63, 62, 67, 2, 
-	1, 68, 70, 71, 72, 73, 74, 75, 
-	65, 8, 15, 18, 21, 26, 32, 37, 
-	41, 44, 47, 81, 49, 51, 54, 57, 
-	58, 82, 83, 63, 62, 1, 65, 63, 
-	62, 1, 65, 63, 62, 1, 65, 62, 
-	68, 62, 62, 46, 62
+	39, 40, 80, 42, 43, 45, 81, 48, 
+	82, 51, 53, 54, 56, 57, 60, 61, 
+	61, 85, 62, 62, 86, 64, 63, 68, 
+	2, 1, 69, 71, 72, 73, 74, 75, 
+	76, 66, 8, 15, 18, 21, 26, 32, 
+	37, 41, 44, 47, 49, 50, 52, 55, 
+	58, 59, 83, 84, 64, 63, 1, 66, 
+	64, 63, 1, 66, 64, 63, 1, 66, 
+	63, 69, 63, 63, 46, 63
 };
 
 static const char _exprParse_trans_actions[] = {
@@ -246,14 +246,14 @@ static const char _exprParse_trans_actions[] = {
 	0, 0, 0, 0, 0, 0, 0, 0, 
 	0, 0, 0, 0, 0, 0, 0, 0, 
 	0, 0, 0, 0, 0, 0, 0, 0, 
-	0, 0, 0, 0, 0, 0, 0, 9, 
-	11, 0, 13, 15, 1, 0, 20, 44, 
-	48, 20, 20, 20, 20, 20, 20, 20, 
-	92, 20, 20, 20, 20, 20, 20, 20, 
+	0, 0, 0, 0, 0, 0, 0, 0, 
+	9, 11, 0, 13, 15, 1, 0, 20, 
+	44, 48, 20, 20, 20, 20, 20, 20, 
+	20, 92, 20, 20, 20, 20, 20, 20, 
 	20, 20, 20, 20, 20, 20, 20, 20, 
-	20, 72, 20, 3, 38, 60, 98, 26, 
-	52, 82, 110, 29, 56, 87, 117, 68, 
-	3, 32, 41, 0, 35
+	20, 20, 72, 20, 3, 38, 60, 98, 
+	26, 52, 82, 110, 29, 56, 87, 117, 
+	68, 3, 32, 41, 0, 35
 };
 
 static const char _exprParse_eof_actions[] = {
@@ -264,22 +264,22 @@ static const char _exprParse_eof_actions[] = {
 	0, 0, 0, 0, 0, 0, 0, 0, 
 	0, 0, 0, 0, 0, 0, 0, 0, 
 	0, 0, 0, 0, 0, 0, 0, 0, 
-	0, 0, 0, 0, 0, 0, 0, 38, 
-	52, 56, 52, 68, 68, 32, 68, 68, 
-	68, 68, 38, 68, 41, 41, 41, 41, 
-	41, 38, 35, 68, 0, 0
+	0, 0, 0, 0, 0, 0, 0, 0, 
+	38, 52, 56, 52, 68, 68, 32, 68, 
+	68, 68, 68, 38, 68, 41, 41, 41, 
+	41, 41, 41, 35, 68, 0, 0
 };
 
-static const int exprParse_start = 62;
-static const int exprParse_first_final = 62;
+static const int exprParse_start = 63;
+static const int exprParse_first_final = 63;
 static const int exprParse_error = 0;
 
-static const int exprParse_en_m_clybrace = 60;
-static const int exprParse_en_m_sqrbrack = 61;
-static const int exprParse_en_main = 62;
+static const int exprParse_en_m_clybrace = 61;
+static const int exprParse_en_m_sqrbrack = 62;
+static const int exprParse_en_main = 63;
 
 
-#line 281 "exprParse.rl"
+#line 281 "expr.rl"
   
   struct {
     int cs;
@@ -294,7 +294,7 @@ static const int exprParse_en_main = 62;
 	 fsm.top = 0;
 	}
 
-#line 289 "exprParse.rl"
+#line 289 "expr.rl"
   
   fsm.p=text;
   fsm.pe=text+strlen(text);
@@ -384,13 +384,13 @@ _match:
 		switch ( *_acts++ )
 		{
 	case 0:
-#line 5 "exprParse.rl"
+#line 5 "expr.rl"
 	{
   prnStart = ( fsm.p);
 }
 	break;
 	case 1:
-#line 9 "exprParse.rl"
+#line 9 "expr.rl"
 	{ 
   DEBUG_MARK("- word:a",( fsm.p));
 
@@ -399,7 +399,7 @@ _match:
 }
 	break;
 	case 2:
-#line 16 "exprParse.rl"
+#line 16 "expr.rl"
 	{
   DEBUG_MARK("- word:b",( fsm.p));
   DEBUG_VAL("===========w",mStart,mEnd);
@@ -420,13 +420,13 @@ _match:
 }
 	break;
 	case 3:
-#line 35 "exprParse.rl"
+#line 35 "expr.rl"
 	{
   DEBUG_MARK("- - sub:a",( fsm.p));
 }
 	break;
 	case 4:
-#line 39 "exprParse.rl"
+#line 39 "expr.rl"
 	{
   DEBUG_MARK("- - sub:b",( fsm.p));
 
@@ -435,7 +435,7 @@ _match:
 }
 	break;
 	case 5:
-#line 46 "exprParse.rl"
+#line 46 "expr.rl"
 	{
   DEBUG_MARK("- - - var:a",( fsm.p));
 
@@ -443,7 +443,7 @@ _match:
 }
 	break;
 	case 6:
-#line 52 "exprParse.rl"
+#line 52 "expr.rl"
 	{
   DEBUG_VAL("===========v",mStart,mEnd);
 
@@ -473,7 +473,7 @@ _match:
 }
 	break;
 	case 7:
-#line 80 "exprParse.rl"
+#line 80 "expr.rl"
 	{
   DEBUG_MARK("- - - cmd:a",( fsm.p));
 
@@ -481,7 +481,7 @@ _match:
 }
 	break;
 	case 8:
-#line 86 "exprParse.rl"
+#line 86 "expr.rl"
 	{
   const char *a=wStart+1;
   const char *b=( fsm.p)-1;
@@ -505,7 +505,7 @@ _match:
 }
 	break;
 	case 9:
-#line 108 "exprParse.rl"
+#line 108 "expr.rl"
 	{
   DEBUG_MARK("- - - qstr:a",( fsm.p));
 
@@ -514,7 +514,7 @@ _match:
 }
 	break;
 	case 10:
-#line 115 "exprParse.rl"
+#line 115 "expr.rl"
 	{
   DEBUG_MARK("- - - qstr:b",( fsm.p));
 
@@ -522,7 +522,7 @@ _match:
 }
 	break;
 	case 11:
-#line 122 "exprParse.rl"
+#line 122 "expr.rl"
 	{
   DEBUG_MARK("- - - bstr:a",( fsm.p));
 
@@ -530,7 +530,7 @@ _match:
 }
 	break;
 	case 12:
-#line 128 "exprParse.rl"
+#line 128 "expr.rl"
 	{
   const char *a=wStart+1;
   const char *b=( fsm.p)-1;
@@ -547,7 +547,7 @@ _match:
 }
 	break;
 	case 13:
-#line 143 "exprParse.rl"
+#line 143 "expr.rl"
 	{  
   DEBUG_MARK("- - - str_char:b",( fsm.p));
 
@@ -556,7 +556,7 @@ _match:
 }
 	break;
 	case 14:
-#line 150 "exprParse.rl"
+#line 150 "expr.rl"
 	{  
   DEBUG_MARK("- - - str_qchar:b",( fsm.p));
 
@@ -565,14 +565,14 @@ _match:
 }
 	break;
 	case 16:
-#line 161 "exprParse.rl"
+#line 161 "expr.rl"
 	{
   DEBUG_MARK("- - - math:a",( fsm.p));
   wStart=( fsm.p);
 }
 	break;
 	case 17:
-#line 166 "exprParse.rl"
+#line 166 "expr.rl"
 	{
   DEBUG_MARK("- - - math:b",( fsm.p));
   DEBUG_VAL("===========m",wStart,( fsm.p));
@@ -587,34 +587,34 @@ _match:
 }
 	break;
 	case 18:
-#line 179 "exprParse.rl"
+#line 179 "expr.rl"
 	{{
-{ fsm.stack[ fsm.top++] =  fsm.cs;  fsm.cs = 60; goto _again;}}}
+{ fsm.stack[ fsm.top++] =  fsm.cs;  fsm.cs = 61; goto _again;}}}
 	break;
 	case 19:
-#line 179 "exprParse.rl"
+#line 179 "expr.rl"
 	{{ fsm.cs =  fsm.stack[-- fsm.top]; {
 }goto _again;}}
 	break;
 	case 20:
-#line 180 "exprParse.rl"
+#line 180 "expr.rl"
 	{{
-{ fsm.stack[ fsm.top++] =  fsm.cs;  fsm.cs = 61; goto _again;}}}
+{ fsm.stack[ fsm.top++] =  fsm.cs;  fsm.cs = 62; goto _again;}}}
 	break;
 	case 21:
-#line 180 "exprParse.rl"
+#line 180 "expr.rl"
 	{{ fsm.cs =  fsm.stack[-- fsm.top]; {
 }goto _again;}}
 	break;
 	case 22:
-#line 182 "exprParse.rl"
-	{{
-{ fsm.stack[ fsm.top++] =  fsm.cs;  fsm.cs = 60; goto _again;}}}
-	break;
-	case 23:
-#line 183 "exprParse.rl"
+#line 182 "expr.rl"
 	{{
 { fsm.stack[ fsm.top++] =  fsm.cs;  fsm.cs = 61; goto _again;}}}
+	break;
+	case 23:
+#line 183 "expr.rl"
+	{{
+{ fsm.stack[ fsm.top++] =  fsm.cs;  fsm.cs = 62; goto _again;}}}
 	break;
 #line 620 "tmp/scriptExprParse.c"
 		}
@@ -633,7 +633,7 @@ _again:
 	while ( __nacts-- > 0 ) {
 		switch ( *__acts++ ) {
 	case 2:
-#line 16 "exprParse.rl"
+#line 16 "expr.rl"
 	{
   DEBUG_MARK("- word:b",( fsm.p));
   DEBUG_VAL("===========w",mStart,mEnd);
@@ -654,7 +654,7 @@ _again:
 }
 	break;
 	case 4:
-#line 39 "exprParse.rl"
+#line 39 "expr.rl"
 	{
   DEBUG_MARK("- - sub:b",( fsm.p));
 
@@ -663,7 +663,7 @@ _again:
 }
 	break;
 	case 6:
-#line 52 "exprParse.rl"
+#line 52 "expr.rl"
 	{
   DEBUG_VAL("===========v",mStart,mEnd);
 
@@ -693,7 +693,7 @@ _again:
 }
 	break;
 	case 8:
-#line 86 "exprParse.rl"
+#line 86 "expr.rl"
 	{
   const char *a=wStart+1;
   const char *b=( fsm.p)-1;
@@ -717,7 +717,7 @@ _again:
 }
 	break;
 	case 10:
-#line 115 "exprParse.rl"
+#line 115 "expr.rl"
 	{
   DEBUG_MARK("- - - qstr:b",( fsm.p));
 
@@ -725,7 +725,7 @@ _again:
 }
 	break;
 	case 12:
-#line 128 "exprParse.rl"
+#line 128 "expr.rl"
 	{
   const char *a=wStart+1;
   const char *b=( fsm.p)-1;
@@ -742,7 +742,7 @@ _again:
 }
 	break;
 	case 13:
-#line 143 "exprParse.rl"
+#line 143 "expr.rl"
 	{  
   DEBUG_MARK("- - - str_char:b",( fsm.p));
 
@@ -751,13 +751,13 @@ _again:
 }
 	break;
 	case 15:
-#line 157 "exprParse.rl"
+#line 157 "expr.rl"
 	{
   quoteParenErr=true;
 }
 	break;
 	case 17:
-#line 166 "exprParse.rl"
+#line 166 "expr.rl"
 	{
   DEBUG_MARK("- - - math:b",( fsm.p));
   DEBUG_VAL("===========m",wStart,( fsm.p));
@@ -779,7 +779,7 @@ _again:
 	_out: {}
 	}
 
-#line 303 "exprParse.rl"
+#line 303 "expr.rl"
 
   if(runErr) {
     scriptExprParseRunErrCallback(extraData,fsm.p);
@@ -788,7 +788,7 @@ _again:
     DEBUG_MARK("paren err",fsm.p);
     scriptExprParseParenErrCallback(extraData,prnStart);
 	return false;
-  } else if(fsm.cs < 62) {
+  } else if(fsm.cs < 63) {
     DEBUG_MARK("err",fsm.p);
     scriptExprParseErrCallback(extraData,fsm.p);
 	return false;
@@ -812,7 +812,7 @@ char *stringFromFile(const char *fn) {
 }
 
 int main() {
-  char *text=stringFromFile("tests/exprParse.txt");
+  char *text=stringFromFile("tests/exprtest.txt");
   scriptExprParse(text,0);
   free(text);
   printf("done\n");

@@ -1,22 +1,22 @@
 
-#line 1 "parse.rl"
+#line 1 "eval.rl"
  
-#line 211 "parse.rl"
+#line 211 "eval.rl"
 
 
   
 
 
-#line 216 "parse.rl"
+#line 216 "eval.rl"
 
-#line 217 "parse.rl"
+#line 217 "eval.rl"
 
-#line 218 "parse.rl"
+#line 218 "eval.rl"
 
-#line 219 "parse.rl"
+#line 219 "eval.rl"
 
 
-#line 228 "parse.rl"
+#line 228 "eval.rl"
 
 
 
@@ -354,7 +354,7 @@ static const int parse_en_m_sqrbrack = 8;
 static const int parse_en_main = 9;
 
 
-#line 272 "parse.rl"
+#line 272 "eval.rl"
   
   struct {
     int cs;
@@ -369,7 +369,7 @@ static const int parse_en_main = 9;
 	 fsm.top = 0;
 	}
 
-#line 280 "parse.rl"
+#line 280 "eval.rl"
   
   fsm.p=text;
   fsm.pe=text+strlen(text);
@@ -458,25 +458,25 @@ _match:
 		switch ( *_acts++ )
 		{
 	case 0:
-#line 5 "parse.rl"
+#line 5 "eval.rl"
 	{
   prnStart = ( fsm.p);
 }
 	break;
 	case 1:
-#line 9 "parse.rl"
+#line 9 "eval.rl"
 	{
   DEBUG_MARK("comment:a",( fsm.p));
 }
 	break;
 	case 2:
-#line 13 "parse.rl"
+#line 13 "eval.rl"
 	{
   DEBUG_MARK("comment:b",( fsm.p));
 }
 	break;
 	case 3:
-#line 17 "parse.rl"
+#line 17 "eval.rl"
 	{
   DEBUG_MARK("stmt:a",( fsm.p));
 
@@ -485,7 +485,7 @@ _match:
 }
 	break;
 	case 4:
-#line 24 "parse.rl"
+#line 24 "eval.rl"
 	{
   DEBUG_MARK("stmt:b",( fsm.p));
 
@@ -496,7 +496,7 @@ _match:
 }
 	break;
 	case 5:
-#line 33 "parse.rl"
+#line 33 "eval.rl"
 	{ 
   DEBUG_MARK("- word:a",( fsm.p));
 
@@ -505,7 +505,7 @@ _match:
 }
 	break;
 	case 6:
-#line 40 "parse.rl"
+#line 40 "eval.rl"
 	{
   DEBUG_MARK("- word:b",( fsm.p));
   DEBUG_VAL("===========w",mStart,mEnd);
@@ -522,13 +522,13 @@ _match:
 }
 	break;
 	case 7:
-#line 55 "parse.rl"
+#line 55 "eval.rl"
 	{
   DEBUG_MARK("- - sub:a",( fsm.p));
 }
 	break;
 	case 8:
-#line 59 "parse.rl"
+#line 59 "eval.rl"
 	{
   DEBUG_MARK("- - sub:b",( fsm.p));
 
@@ -537,7 +537,7 @@ _match:
 }
 	break;
 	case 9:
-#line 66 "parse.rl"
+#line 66 "eval.rl"
 	{
   DEBUG_MARK("- - - var:a",( fsm.p));
 
@@ -545,7 +545,7 @@ _match:
 }
 	break;
 	case 10:
-#line 72 "parse.rl"
+#line 72 "eval.rl"
 	{
   DEBUG_VAL("===========v",mStart,mEnd);
 
@@ -575,7 +575,7 @@ _match:
 }
 	break;
 	case 11:
-#line 100 "parse.rl"
+#line 100 "eval.rl"
 	{
   DEBUG_MARK("- - - cmd:a",( fsm.p));
 
@@ -583,7 +583,7 @@ _match:
 }
 	break;
 	case 12:
-#line 106 "parse.rl"
+#line 106 "eval.rl"
 	{
   const char *a=wStart+1;
   const char *b=( fsm.p)-1;
@@ -607,7 +607,7 @@ _match:
 }
 	break;
 	case 13:
-#line 128 "parse.rl"
+#line 128 "eval.rl"
 	{
   DEBUG_MARK("- - - qstr:a",( fsm.p));
 
@@ -616,7 +616,7 @@ _match:
 }
 	break;
 	case 14:
-#line 135 "parse.rl"
+#line 135 "eval.rl"
 	{
   DEBUG_MARK("- - - qstr:b",( fsm.p));
 
@@ -624,7 +624,7 @@ _match:
 }
 	break;
 	case 15:
-#line 142 "parse.rl"
+#line 142 "eval.rl"
 	{
   DEBUG_MARK("- - - bstr:a",( fsm.p));
 
@@ -632,7 +632,7 @@ _match:
 }
 	break;
 	case 16:
-#line 148 "parse.rl"
+#line 148 "eval.rl"
 	{
   const char *a=wStart+1;
   const char *b=( fsm.p)-1;
@@ -649,7 +649,7 @@ _match:
 }
 	break;
 	case 17:
-#line 163 "parse.rl"
+#line 163 "eval.rl"
 	{  
   DEBUG_MARK("- - - str_char:b",( fsm.p));
 
@@ -658,7 +658,7 @@ _match:
 }
 	break;
 	case 18:
-#line 170 "parse.rl"
+#line 170 "eval.rl"
 	{  
   DEBUG_MARK("- - - str_qchar:b",( fsm.p));
 
@@ -667,32 +667,32 @@ _match:
 }
 	break;
 	case 20:
-#line 181 "parse.rl"
+#line 181 "eval.rl"
 	{{
 { fsm.stack[ fsm.top++] =  fsm.cs;  fsm.cs = 7; goto _again;}}}
 	break;
 	case 21:
-#line 181 "parse.rl"
+#line 181 "eval.rl"
 	{{ fsm.cs =  fsm.stack[-- fsm.top]; {
 }goto _again;}}
 	break;
 	case 22:
-#line 182 "parse.rl"
+#line 182 "eval.rl"
 	{{
 { fsm.stack[ fsm.top++] =  fsm.cs;  fsm.cs = 8; goto _again;}}}
 	break;
 	case 23:
-#line 182 "parse.rl"
+#line 182 "eval.rl"
 	{{ fsm.cs =  fsm.stack[-- fsm.top]; {
 }goto _again;}}
 	break;
 	case 24:
-#line 184 "parse.rl"
+#line 184 "eval.rl"
 	{{
 { fsm.stack[ fsm.top++] =  fsm.cs;  fsm.cs = 7; goto _again;}}}
 	break;
 	case 25:
-#line 185 "parse.rl"
+#line 185 "eval.rl"
 	{{
 { fsm.stack[ fsm.top++] =  fsm.cs;  fsm.cs = 8; goto _again;}}}
 	break;
@@ -713,13 +713,13 @@ _again:
 	while ( __nacts-- > 0 ) {
 		switch ( *__acts++ ) {
 	case 2:
-#line 13 "parse.rl"
+#line 13 "eval.rl"
 	{
   DEBUG_MARK("comment:b",( fsm.p));
 }
 	break;
 	case 4:
-#line 24 "parse.rl"
+#line 24 "eval.rl"
 	{
   DEBUG_MARK("stmt:b",( fsm.p));
 
@@ -730,7 +730,7 @@ _again:
 }
 	break;
 	case 6:
-#line 40 "parse.rl"
+#line 40 "eval.rl"
 	{
   DEBUG_MARK("- word:b",( fsm.p));
   DEBUG_VAL("===========w",mStart,mEnd);
@@ -747,7 +747,7 @@ _again:
 }
 	break;
 	case 8:
-#line 59 "parse.rl"
+#line 59 "eval.rl"
 	{
   DEBUG_MARK("- - sub:b",( fsm.p));
 
@@ -756,7 +756,7 @@ _again:
 }
 	break;
 	case 10:
-#line 72 "parse.rl"
+#line 72 "eval.rl"
 	{
   DEBUG_VAL("===========v",mStart,mEnd);
 
@@ -786,7 +786,7 @@ _again:
 }
 	break;
 	case 12:
-#line 106 "parse.rl"
+#line 106 "eval.rl"
 	{
   const char *a=wStart+1;
   const char *b=( fsm.p)-1;
@@ -810,7 +810,7 @@ _again:
 }
 	break;
 	case 14:
-#line 135 "parse.rl"
+#line 135 "eval.rl"
 	{
   DEBUG_MARK("- - - qstr:b",( fsm.p));
 
@@ -818,7 +818,7 @@ _again:
 }
 	break;
 	case 16:
-#line 148 "parse.rl"
+#line 148 "eval.rl"
 	{
   const char *a=wStart+1;
   const char *b=( fsm.p)-1;
@@ -835,7 +835,7 @@ _again:
 }
 	break;
 	case 17:
-#line 163 "parse.rl"
+#line 163 "eval.rl"
 	{  
   DEBUG_MARK("- - - str_char:b",( fsm.p));
 
@@ -844,7 +844,7 @@ _again:
 }
 	break;
 	case 19:
-#line 177 "parse.rl"
+#line 177 "eval.rl"
 	{
   quoteParenErr=true;
 }
@@ -857,7 +857,7 @@ _again:
 	_out: {}
 	}
 
-#line 293 "parse.rl"
+#line 293 "eval.rl"
   if(runErr) {
     scriptEvalParseRunErrCallback(extraData,fsm.p);
   } else if(fsm.top != 0 || quoteParenErr) {
@@ -884,7 +884,7 @@ char *stringFromFile(const char *fn) {
 }
 
 int main() {
-  char *text=stringFromFile("tests/parse.tcl");
+  char *text=stringFromFile("tests/evaltest.tcl");
   scriptEvalParse(text,0);
   free(text);
   printf("done\n");
