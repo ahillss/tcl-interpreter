@@ -1,6 +1,9 @@
 
-#include "script.h"
-#include "scriptCmd.h"
+#include "mtcl.h"
+#include "mtclCmd.h"
+
+#include "mtclEval.h"
+
 char *stringFromFile(const char *fn) {
   FILE *file = fopen(fn, "rb");
   if(!file) { return 0;  }
@@ -14,33 +17,33 @@ char *stringFromFile(const char *fn) {
   return str;
 }
 
-void evalFile(struct scriptInterp *i,const char *fn) {
+void evalFile(struct mtclInterp *i,const char *fn) {
   char *buf=stringFromFile(fn);
 
   if(!buf) {
     return;
   }
 
-  if(scriptEval(i,buf) != SCRIPT_OK) {
+  if(mtclEval(i,buf) != MTCL_OK) {
     printf("%s\n", i->result);
   }
 
   free(buf);
 }
 
-int runREPL(struct scriptInterp *interp) {
+int runREPL(struct mtclInterp *interp) {
   while(1) {
     char clibuf[1024];
     int retcode;
 
-    printf("script> ");
+    printf("mtcl> ");
     fflush(stdout);
 
     if(fgets(clibuf,1024,stdin) == NULL) {
       break;
     }
 
-    retcode = scriptEval(interp,clibuf);
+    retcode = mtclEval(interp,clibuf);
 
     if (interp->result[0] != '\0') {
       printf("[%d] %s\n", retcode, interp->result);
@@ -51,9 +54,9 @@ int runREPL(struct scriptInterp *interp) {
 }
 
 int main(int argc, char **argv) {
-  struct scriptInterp i;
-  scriptInitInterp(&i);
-  scriptRegisterCoreCommands(&i);
+  struct mtclInterp i;
+  mtclInitInterp(&i);
+  mtclRegisterCoreCommands(&i);
   evalFile(&i,"common.tcl");
   if(argc == 1) {
     runREPL(&i);

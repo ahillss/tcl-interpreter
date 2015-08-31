@@ -19,12 +19,12 @@ action wordEnd {
 
   if(!isMath) {
   if(mStart<mEnd) { //APPEND_WORD
-    if(!scriptExprParsePartCallback(extraData,mStart,mEnd)) {
+    if(!mtclExprParsePartCallback(extraData,mStart,mEnd)) {
       fbreak;
     }
   }
   
-  if(!scriptExprParseWordEndCallback(extraData)) { //APPEND_WORDS
+  if(!mtclExprParseWordEndCallback(extraData)) { //APPEND_WORDS
     fbreak;
   }
   }
@@ -53,7 +53,7 @@ action varEnd {
   DEBUG_VAL("===========v",mStart,mEnd);
 
   if(mStart<mEnd) { //APPEND_WORD
-    if(!scriptExprParsePartCallback(extraData,mStart,mEnd)) {
+    if(!mtclExprParsePartCallback(extraData,mStart,mEnd)) {
       fbreak;
     }
   }
@@ -69,7 +69,7 @@ action varEnd {
   DEBUG_MARK("- - - var:b",fpc);
   DEBUG_VAL("==========vv",a,b);
 
-  if(!scriptExprParseVarCallback(extraData,a,b)) { //APPEND_WORD_VAR
+  if(!mtclExprParseVarCallback(extraData,a,b)) { //APPEND_WORD_VAR
     runErr=true;
     fbreak;
   }
@@ -92,12 +92,12 @@ action cmdEnd {
   DEBUG_VAL("==========cc",a,b);
 
   if(mStart<mEnd) { //APPEND_WORD
-    if(!scriptExprParsePartCallback(extraData,mStart,mEnd)) {
+    if(!mtclExprParsePartCallback(extraData,mStart,mEnd)) {
       fbreak;
     }
   }
    
-  if(!scriptExprParseCmdCallback(extraData,a,b)) { //APPEND_WORD_CMD
+  if(!mtclExprParseCmdCallback(extraData,a,b)) { //APPEND_WORD_CMD
     runErr=true;
     fbreak;
   }
@@ -132,7 +132,7 @@ action braceEnd {
   DEBUG_MARK("- - - bstr:b",fpc);
   DEBUG_VAL("==========bb",a,b);
 
-  if(!scriptExprParsePartCallback(extraData,a,b)) { //APPEND_WORD
+  if(!mtclExprParsePartCallback(extraData,a,b)) { //APPEND_WORD
     fbreak;
   }
 
@@ -167,7 +167,7 @@ action mathEnd {
   DEBUG_MARK("- - - math:b",fpc);
   DEBUG_VAL("===========m",wStart,fpc);
   
-  if(!scriptExprParseMathEndCallback(extraData,wStart,fpc)) {
+  if(!mtclExprParseMathEndCallback(extraData,wStart,fpc)) {
     fbreak;
   }
   
@@ -245,22 +245,22 @@ postpop {
 #include <stdbool.h>
 #endif
 
-#ifdef SCRIPT_EXPR_PARSE_TEST
-#define scriptExprParsePartCallback(DATA,A,B) 1
-#define scriptExprParseVarCallback(DATA,A,B) 1
-#define scriptExprParseCmdCallback(DATA,A,B) 1
-#define scriptExprParseWordEndCallback(DATA) 1
-#define scriptExprParseMathEndCallback(DATA,A,B) 1
-#define scriptExprParseParenErrCallback(D,P)
-#define scriptExprParseErrCallback(D,P)
-#define scriptExprParseRunErrCallback(D,P)
+#ifdef MTCL_EXPR_PARSE_TEST
+#define mtclExprParsePartCallback(DATA,A,B) 1
+#define mtclExprParseVarCallback(DATA,A,B) 1
+#define mtclExprParseCmdCallback(DATA,A,B) 1
+#define mtclExprParseWordEndCallback(DATA) 1
+#define mtclExprParseMathEndCallback(DATA,A,B) 1
+#define mtclExprParseParenErrCallback(D,P)
+#define mtclExprParseErrCallback(D,P)
+#define mtclExprParseRunErrCallback(D,P)
 	
-#define SCRIPT_EXPR_PARSE_DEBUG
+#define MTCL_EXPR_PARSE_DEBUG
 #else
-#include "scriptExprParse.h"
+#include "mtclExprParse.h"
 #endif
 
-#ifndef SCRIPT_EXPR_PARSE_DEBUG
+#ifndef MTCL_EXPR_PARSE_DEBUG
 #define DEBUG_MARK(X,P)
 #define DEBUG_VAL(X,A,B) 
 #else
@@ -276,7 +276,7 @@ postpop {
 
 #endif
 
-bool scriptExprParse(const char *text,void *extraData) {
+bool mtclExprParse(const char *text,void *extraData) {
   %% write data;
   
   struct {
@@ -302,22 +302,22 @@ bool scriptExprParse(const char *text,void *extraData) {
   %% write exec;
 
   if(runErr) {
-    scriptExprParseRunErrCallback(extraData,fsm.p);
+    mtclExprParseRunErrCallback(extraData,fsm.p);
 	return false;
   } else if(fsm.top != 0 || quoteParenErr) {
     DEBUG_MARK("paren err",fsm.p);
-    scriptExprParseParenErrCallback(extraData,prnStart);
+    mtclExprParseParenErrCallback(extraData,prnStart);
 	return false;
   } else if(fsm.cs < %%{ write first_final; }%%) {
     DEBUG_MARK("err",fsm.p);
-    scriptExprParseErrCallback(extraData,fsm.p);
+    mtclExprParseErrCallback(extraData,fsm.p);
 	return false;
   } 
   
   return true;
 }
 
-#ifdef SCRIPT_EXPR_PARSE_TEST
+#ifdef MTCL_EXPR_PARSE_TEST
 char *stringFromFile(const char *fn) {
   FILE *file = fopen(fn, "rb");
   if(!file) { return 0;  }
@@ -333,7 +333,7 @@ char *stringFromFile(const char *fn) {
 
 int main() {
   char *text=stringFromFile("tests/exprtest.txt");
-  scriptExprParse(text,0);
+  mtclExprParse(text,0);
   free(text);
   printf("done\n");
   return 0;

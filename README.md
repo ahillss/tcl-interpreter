@@ -1,9 +1,9 @@
 ####Minimal TCL Interpreter
-Currently unnamed so everything is prefixed with "script" for now. A minimal C/C++ embeddable TCL interpreter based off [picol](http://oldblog.antirez.com/post/picol.html), where upvar, uplevel, expr have been added and eval has been replaced.
+A minimal C/C++ embeddable TCL interpreter based off [picol](http://oldblog.antirez.com/post/picol.html), where upvar, uplevel, expr have been added and eval has been replaced.
 
-Intended to be very small and have no depedencies, a subset of TCL that deviates slightly.
+Intended to be very small with no depedencies.
 
-The expr command uses polish notation instead of the infix expressions.
+A subset of TCL, though the expr command uses polish notation instead of the infix expressions.
 
 [Ragel](https://www.colm.net/open-source/ragel) is used to generate the parsers for eval and expr.
 

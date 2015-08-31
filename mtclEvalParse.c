@@ -28,22 +28,22 @@
 #include <stdbool.h>
 #endif
 
-#ifdef SCRIPT_EVAL_PARSE_TEST
-#define scriptEvalParsePartCallback(DATA,A,B) 1
-#define scriptEvalParseVarCallback(DATA,A,B) 1
-#define scriptEvalParseCmdCallback(DATA,A,B) 1
-#define scriptEvalParseWordEndCallback(DATA) 1
-#define scriptEvalParseStmtEndCallback(DATA) 1
-#define scriptEvalParseParenErrCallback(D,P)
-#define scriptEvalParseErrCallback(D,P)
-#define scriptEvalParseRunErrCallback(D,P)
+#ifdef MTCL_EVAL_PARSE_TEST
+#define mtclEvalParsePartCallback(DATA,A,B) 1
+#define mtclEvalParseVarCallback(DATA,A,B) 1
+#define mtclEvalParseCmdCallback(DATA,A,B) 1
+#define mtclEvalParseWordEndCallback(DATA) 1
+#define mtclEvalParseStmtEndCallback(DATA) 1
+#define mtclEvalParseParenErrCallback(D,P)
+#define mtclEvalParseErrCallback(D,P)
+#define mtclEvalParseRunErrCallback(D,P)
 
-#define SCRIPT_EVAL_PARSE_DEBUG
+#define MTCL_EVAL_PARSE_DEBUG
 #else
-#include "scriptEvalParse.h"
+#include "mtclEvalParse.h"
 #endif
 
-#ifndef SCRIPT_EVAL_PARSE_DEBUG
+#ifndef MTCL_EVAL_PARSE_DEBUG
 #define DEBUG_MARK(X,P)
 #define DEBUG_VAL(X,A,B) 
 #else
@@ -59,9 +59,9 @@
 
 #endif
 
-void scriptEvalParse(const char *text,void *extraData) {
+void mtclEvalParse(const char *text,void *extraData) {
   
-#line 65 "tmp/scriptEvalParse.c"
+#line 65 "tmp/mtclEvalParse.c"
 static const char _parse_actions[] = {
 	0, 1, 1, 1, 2, 1, 4, 1, 
 	5, 1, 17, 1, 18, 1, 19, 1, 
@@ -363,7 +363,7 @@ static const int parse_en_main = 9;
   } fsm;
   
   
-#line 367 "tmp/scriptEvalParse.c"
+#line 367 "tmp/mtclEvalParse.c"
 	{
 	 fsm.cs = parse_start;
 	 fsm.top = 0;
@@ -383,7 +383,7 @@ static const int parse_en_main = 9;
   bool quoteParenErr=false;
   
   
-#line 387 "tmp/scriptEvalParse.c"
+#line 387 "tmp/mtclEvalParse.c"
 	{
 	int _klen;
 	unsigned int _trans;
@@ -489,7 +489,7 @@ _match:
 	{
   DEBUG_MARK("stmt:b",( fsm.p));
 
-  if(!scriptEvalParseStmtEndCallback(extraData)) {  //EVAL_WORDS
+  if(!mtclEvalParseStmtEndCallback(extraData)) {  //EVAL_WORDS
     runErr=true;
     {( fsm.p)++; goto _out; }
   }
@@ -511,12 +511,12 @@ _match:
   DEBUG_VAL("===========w",mStart,mEnd);
 
   if(mStart<mEnd) { //APPEND_WORD
-    if(!scriptEvalParsePartCallback(extraData,mStart,mEnd)) {
+    if(!mtclEvalParsePartCallback(extraData,mStart,mEnd)) {
       {( fsm.p)++; goto _out; }
     }
   }
   
-  if(!scriptEvalParseWordEndCallback(extraData)) { //APPEND_WORDS
+  if(!mtclEvalParseWordEndCallback(extraData)) { //APPEND_WORDS
     {( fsm.p)++; goto _out; }
   } 
 }
@@ -550,7 +550,7 @@ _match:
   DEBUG_VAL("===========v",mStart,mEnd);
 
   if(mStart<mEnd) { //APPEND_WORD
-    if(!scriptEvalParsePartCallback(extraData,mStart,mEnd)) {
+    if(!mtclEvalParsePartCallback(extraData,mStart,mEnd)) {
       {( fsm.p)++; goto _out; }
     }
   }
@@ -566,7 +566,7 @@ _match:
   DEBUG_MARK("- - - var:b",( fsm.p));
   DEBUG_VAL("==========vv",a,b);
 
-  if(!scriptEvalParseVarCallback(extraData,a,b)) { //APPEND_WORD_VAR
+  if(!mtclEvalParseVarCallback(extraData,a,b)) { //APPEND_WORD_VAR
     runErr=true;
     {( fsm.p)++; goto _out; }
   }
@@ -593,12 +593,12 @@ _match:
   DEBUG_VAL("==========cc",a,b);
 
   if(mStart<mEnd) { //APPEND_WORD
-    if(!scriptEvalParsePartCallback(extraData,mStart,mEnd)) {
+    if(!mtclEvalParsePartCallback(extraData,mStart,mEnd)) {
       {( fsm.p)++; goto _out; }
     }
   }
    
-  if(!scriptEvalParseCmdCallback(extraData,a,b)) { //APPEND_WORD_CMD
+  if(!mtclEvalParseCmdCallback(extraData,a,b)) { //APPEND_WORD_CMD
     runErr=true;
     {( fsm.p)++; goto _out; }
   }
@@ -640,7 +640,7 @@ _match:
   DEBUG_MARK("- - - bstr:b",( fsm.p));
   DEBUG_VAL("==========bb",a,b);
 
-  if(!scriptEvalParsePartCallback(extraData,a,b)) { //APPEND_WORD
+  if(!mtclEvalParsePartCallback(extraData,a,b)) { //APPEND_WORD
     {( fsm.p)++; goto _out; }
   }
 
@@ -696,7 +696,7 @@ _match:
 	{{
 { fsm.stack[ fsm.top++] =  fsm.cs;  fsm.cs = 8; goto _again;}}}
 	break;
-#line 700 "tmp/scriptEvalParse.c"
+#line 700 "tmp/mtclEvalParse.c"
 		}
 	}
 
@@ -723,7 +723,7 @@ _again:
 	{
   DEBUG_MARK("stmt:b",( fsm.p));
 
-  if(!scriptEvalParseStmtEndCallback(extraData)) {  //EVAL_WORDS
+  if(!mtclEvalParseStmtEndCallback(extraData)) {  //EVAL_WORDS
     runErr=true;
     {( fsm.p)++; goto _out; }
   }
@@ -736,12 +736,12 @@ _again:
   DEBUG_VAL("===========w",mStart,mEnd);
 
   if(mStart<mEnd) { //APPEND_WORD
-    if(!scriptEvalParsePartCallback(extraData,mStart,mEnd)) {
+    if(!mtclEvalParsePartCallback(extraData,mStart,mEnd)) {
       {( fsm.p)++; goto _out; }
     }
   }
   
-  if(!scriptEvalParseWordEndCallback(extraData)) { //APPEND_WORDS
+  if(!mtclEvalParseWordEndCallback(extraData)) { //APPEND_WORDS
     {( fsm.p)++; goto _out; }
   } 
 }
@@ -761,7 +761,7 @@ _again:
   DEBUG_VAL("===========v",mStart,mEnd);
 
   if(mStart<mEnd) { //APPEND_WORD
-    if(!scriptEvalParsePartCallback(extraData,mStart,mEnd)) {
+    if(!mtclEvalParsePartCallback(extraData,mStart,mEnd)) {
       {( fsm.p)++; goto _out; }
     }
   }
@@ -777,7 +777,7 @@ _again:
   DEBUG_MARK("- - - var:b",( fsm.p));
   DEBUG_VAL("==========vv",a,b);
 
-  if(!scriptEvalParseVarCallback(extraData,a,b)) { //APPEND_WORD_VAR
+  if(!mtclEvalParseVarCallback(extraData,a,b)) { //APPEND_WORD_VAR
     runErr=true;
     {( fsm.p)++; goto _out; }
   }
@@ -796,12 +796,12 @@ _again:
   DEBUG_VAL("==========cc",a,b);
 
   if(mStart<mEnd) { //APPEND_WORD
-    if(!scriptEvalParsePartCallback(extraData,mStart,mEnd)) {
+    if(!mtclEvalParsePartCallback(extraData,mStart,mEnd)) {
       {( fsm.p)++; goto _out; }
     }
   }
    
-  if(!scriptEvalParseCmdCallback(extraData,a,b)) { //APPEND_WORD_CMD
+  if(!mtclEvalParseCmdCallback(extraData,a,b)) { //APPEND_WORD_CMD
     runErr=true;
     {( fsm.p)++; goto _out; }
   }
@@ -826,7 +826,7 @@ _again:
   DEBUG_MARK("- - - bstr:b",( fsm.p));
   DEBUG_VAL("==========bb",a,b);
 
-  if(!scriptEvalParsePartCallback(extraData,a,b)) { //APPEND_WORD
+  if(!mtclEvalParsePartCallback(extraData,a,b)) { //APPEND_WORD
     {( fsm.p)++; goto _out; }
   }
 
@@ -849,7 +849,7 @@ _again:
   quoteParenErr=true;
 }
 	break;
-#line 853 "tmp/scriptEvalParse.c"
+#line 853 "tmp/mtclEvalParse.c"
 		}
 	}
 	}
@@ -859,17 +859,17 @@ _again:
 
 #line 293 "eval.rl"
   if(runErr) {
-    scriptEvalParseRunErrCallback(extraData,fsm.p);
+    mtclEvalParseRunErrCallback(extraData,fsm.p);
   } else if(fsm.top != 0 || quoteParenErr) {
     DEBUG_MARK("paren err",fsm.p);
-    scriptEvalParseParenErrCallback(extraData,prnStart);
+    mtclEvalParseParenErrCallback(extraData,prnStart);
   } else if(fsm.cs < 9) {
     DEBUG_MARK("err",fsm.p);
-    scriptEvalParseErrCallback(extraData,fsm.p);
+    mtclEvalParseErrCallback(extraData,fsm.p);
   } 
 }
 
-#ifdef SCRIPT_EVAL_PARSE_TEST
+#ifdef MTCL_EVAL_PARSE_TEST
 char *stringFromFile(const char *fn) {
   FILE *file = fopen(fn, "rb");
   if(!file) { return 0;  }
@@ -885,7 +885,7 @@ char *stringFromFile(const char *fn) {
 
 int main() {
   char *text=stringFromFile("tests/evaltest.tcl");
-  scriptEvalParse(text,0);
+  mtclEvalParse(text,0);
   free(text);
   printf("done\n");
   return 0;

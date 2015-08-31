@@ -1,18 +1,19 @@
 OUTDIR = bin
-OUTFILE = $(OUTDIR)/script
+OUTFILE = $(OUTDIR)/mtcl
 CC = g++
 EXT = c
 
 CPPFLAGS :=
 CFLAGS :=
 LDFLAGS :=
+
 #DEBUG_BUILD = -g
 #DEBUG_TEST = gdb --eval-command=run
 
-# CPPFLAGS += -DSCRIPT_PARSE_DEBUG
-# CPPFLAGS += -DSCRIPT_EVAL_DEBUG
-# CPPFLAGS += -DSCRIPT_EXPR_PARSE_DEBUG
-# CPPFLAGS += -DSCRIPT_EXPR_DEBUG
+# CPPFLAGS += -DMTCL_PARSE_DEBUG
+# CPPFLAGS += -DMTCL_EVAL_DEBUG
+# CPPFLAGS += -DMTCL_EXPR_PARSE_DEBUG
+# CPPFLAGS += -DMTCL_EXPR_DEBUG
 
 objs := $(patsubst %.$(EXT),$(OUTDIR)/%.o,$(wildcard *.$(EXT)))
 deps := $(objs:.o=.dep)
@@ -31,7 +32,7 @@ $(OUTFILE) : $(objs)
 	$(CC) $(DEBUG_BUILD) $^ $(LDFLAGS) -o $@
 
 test: $(OUTFILE)
-	@$(DEBUG_TEST) $(OUTFILE)
+	@$(DEBUG_TEST) $(OUTFILE) tests/b.tcl
 
 clean:
 	@rm -f $(deps) $(objs) $(OUTFILE) $(OUTFILE).exe

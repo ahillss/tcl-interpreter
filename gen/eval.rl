@@ -24,7 +24,7 @@ action stmtStart {
 action stmtEnd {
   DEBUG_MARK("stmt:b",fpc);
 
-  if(!scriptEvalParseStmtEndCallback(extraData)) {  //EVAL_WORDS
+  if(!mtclEvalParseStmtEndCallback(extraData)) {  //EVAL_WORDS
     runErr=true;
     fbreak;
   }
@@ -42,12 +42,12 @@ action wordEnd {
   DEBUG_VAL("===========w",mStart,mEnd);
 
   if(mStart<mEnd) { //APPEND_WORD
-    if(!scriptEvalParsePartCallback(extraData,mStart,mEnd)) {
+    if(!mtclEvalParsePartCallback(extraData,mStart,mEnd)) {
       fbreak;
     }
   }
   
-  if(!scriptEvalParseWordEndCallback(extraData)) { //APPEND_WORDS
+  if(!mtclEvalParseWordEndCallback(extraData)) { //APPEND_WORDS
     fbreak;
   } 
 }
@@ -73,7 +73,7 @@ action varEnd {
   DEBUG_VAL("===========v",mStart,mEnd);
 
   if(mStart<mEnd) { //APPEND_WORD
-    if(!scriptEvalParsePartCallback(extraData,mStart,mEnd)) {
+    if(!mtclEvalParsePartCallback(extraData,mStart,mEnd)) {
       fbreak;
     }
   }
@@ -89,7 +89,7 @@ action varEnd {
   DEBUG_MARK("- - - var:b",fpc);
   DEBUG_VAL("==========vv",a,b);
 
-  if(!scriptEvalParseVarCallback(extraData,a,b)) { //APPEND_WORD_VAR
+  if(!mtclEvalParseVarCallback(extraData,a,b)) { //APPEND_WORD_VAR
     runErr=true;
     fbreak;
   }
@@ -112,12 +112,12 @@ action cmdEnd {
   DEBUG_VAL("==========cc",a,b);
 
   if(mStart<mEnd) { //APPEND_WORD
-    if(!scriptEvalParsePartCallback(extraData,mStart,mEnd)) {
+    if(!mtclEvalParsePartCallback(extraData,mStart,mEnd)) {
       fbreak;
     }
   }
    
-  if(!scriptEvalParseCmdCallback(extraData,a,b)) { //APPEND_WORD_CMD
+  if(!mtclEvalParseCmdCallback(extraData,a,b)) { //APPEND_WORD_CMD
     runErr=true;
     fbreak;
   }
@@ -152,7 +152,7 @@ action braceEnd {
   DEBUG_MARK("- - - bstr:b",fpc);
   DEBUG_VAL("==========bb",a,b);
 
-  if(!scriptEvalParsePartCallback(extraData,a,b)) { //APPEND_WORD
+  if(!mtclEvalParsePartCallback(extraData,a,b)) { //APPEND_WORD
     fbreak;
   }
 
@@ -236,22 +236,22 @@ postpop {
 #include <stdbool.h>
 #endif
 
-#ifdef SCRIPT_EVAL_PARSE_TEST
-#define scriptEvalParsePartCallback(DATA,A,B) 1
-#define scriptEvalParseVarCallback(DATA,A,B) 1
-#define scriptEvalParseCmdCallback(DATA,A,B) 1
-#define scriptEvalParseWordEndCallback(DATA) 1
-#define scriptEvalParseStmtEndCallback(DATA) 1
-#define scriptEvalParseParenErrCallback(D,P)
-#define scriptEvalParseErrCallback(D,P)
-#define scriptEvalParseRunErrCallback(D,P)
+#ifdef MTCL_EVAL_PARSE_TEST
+#define mtclEvalParsePartCallback(DATA,A,B) 1
+#define mtclEvalParseVarCallback(DATA,A,B) 1
+#define mtclEvalParseCmdCallback(DATA,A,B) 1
+#define mtclEvalParseWordEndCallback(DATA) 1
+#define mtclEvalParseStmtEndCallback(DATA) 1
+#define mtclEvalParseParenErrCallback(D,P)
+#define mtclEvalParseErrCallback(D,P)
+#define mtclEvalParseRunErrCallback(D,P)
 
-#define SCRIPT_EVAL_PARSE_DEBUG
+#define MTCL_EVAL_PARSE_DEBUG
 #else
-#include "scriptEvalParse.h"
+#include "mtclEvalParse.h"
 #endif
 
-#ifndef SCRIPT_EVAL_PARSE_DEBUG
+#ifndef MTCL_EVAL_PARSE_DEBUG
 #define DEBUG_MARK(X,P)
 #define DEBUG_VAL(X,A,B) 
 #else
@@ -267,7 +267,7 @@ postpop {
 
 #endif
 
-void scriptEvalParse(const char *text,void *extraData) {
+void mtclEvalParse(const char *text,void *extraData) {
   %% write data;
   
   struct {
@@ -291,17 +291,17 @@ void scriptEvalParse(const char *text,void *extraData) {
   
   %% write exec;
   if(runErr) {
-    scriptEvalParseRunErrCallback(extraData,fsm.p);
+    mtclEvalParseRunErrCallback(extraData,fsm.p);
   } else if(fsm.top != 0 || quoteParenErr) {
     DEBUG_MARK("paren err",fsm.p);
-    scriptEvalParseParenErrCallback(extraData,prnStart);
+    mtclEvalParseParenErrCallback(extraData,prnStart);
   } else if(fsm.cs < %%{ write first_final; }%%) {
     DEBUG_MARK("err",fsm.p);
-    scriptEvalParseErrCallback(extraData,fsm.p);
+    mtclEvalParseErrCallback(extraData,fsm.p);
   } 
 }
 
-#ifdef SCRIPT_EVAL_PARSE_TEST
+#ifdef MTCL_EVAL_PARSE_TEST
 char *stringFromFile(const char *fn) {
   FILE *file = fopen(fn, "rb");
   if(!file) { return 0;  }
@@ -317,7 +317,7 @@ char *stringFromFile(const char *fn) {
 
 int main() {
   char *text=stringFromFile("tests/evaltest.tcl");
-  scriptEvalParse(text,0);
+  mtclEvalParse(text,0);
   free(text);
   printf("done\n");
   return 0;

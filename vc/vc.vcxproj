@@ -28,20 +28,20 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\main.c" />
-    <ClCompile Include="..\script.c" />
-    <ClCompile Include="..\scriptCmd.c" />
-    <ClCompile Include="..\scriptEval.c" />
-    <ClCompile Include="..\scriptExpr.c" />
-    <ClCompile Include="..\scriptExprParse.c" />
-    <ClCompile Include="..\scriptEvalParse.c" />
+    <ClCompile Include="..\mtcl.c" />
+    <ClCompile Include="..\mtclCmd.c" />
+    <ClCompile Include="..\mtclEval.c" />
+    <ClCompile Include="..\mtclExpr.c" />
+    <ClCompile Include="..\mtclExprParse.c" />
+    <ClCompile Include="..\mtclEvalParse.c" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\script.h" />
-    <ClInclude Include="..\scriptCmd.h" />
-    <ClInclude Include="..\scriptEval.h" />
-    <ClInclude Include="..\scriptExpr.h" />
-    <ClInclude Include="..\scriptExprParse.h" />
-    <ClInclude Include="..\scriptEvalParse.h" />
+    <ClInclude Include="..\mtcl.h" />
+    <ClInclude Include="..\mtclCmd.h" />
+    <ClInclude Include="..\mtclEval.h" />
+    <ClInclude Include="..\mtclExpr.h" />
+    <ClInclude Include="..\mtclExprParse.h" />
+    <ClInclude Include="..\mtclEvalParse.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{0EDE3924-0C23-4ED7-B9EE-99CB11F466BC}</ProjectGuid>
@@ -177,7 +177,7 @@
       </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;WIN32;_DEBUG;_CONSOLE;SCRIPT_EXPR_PARSE_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;WIN32;_DEBUG;_CONSOLE;MTCL_EXPR_PARSE_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -191,7 +191,7 @@
       </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;WIN32;_DEBUG;_CONSOLE;SCRIPT_EXPR_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;WIN32;_DEBUG;_CONSOLE;MTCL_EXPR_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -205,7 +205,7 @@
       </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;WIN32;_DEBUG;_CONSOLE;SCRIPT_EVAL_PARSE_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;WIN32;_DEBUG;_CONSOLE;MTCL_EVAL_PARSE_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -219,7 +219,7 @@
       </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;WIN32;_DEBUG;_CONSOLE;SCRIPT_EVAL_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;WIN32;_DEBUG;_CONSOLE;MTCL_EVAL_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>

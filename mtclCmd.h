@@ -1,14 +1,14 @@
 #ifndef COMMANDS_H
 #define COMMANDS_H
 
-#include "script.h"
-#include "scriptExpr.h"
+#include "mtcl.h"
+#include "mtclExpr.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-void scriptRegisterCoreCommands(struct scriptInterp *i);
+void mtclRegisterCoreCommands(struct mtclInterp *i);
 
 #ifdef __cplusplus
 }

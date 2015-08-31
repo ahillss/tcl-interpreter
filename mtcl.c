@@ -1,9 +1,10 @@
-#include "script.h"
+#include "mtcl.h"
+#include "mtclEval.h"
 
 
-void scriptInitInterp(struct scriptInterp *i) {
+void mtclInitInterp(struct mtclInterp *i) {
     i->level = 0;
-    i->callframe = (struct scriptCallFrame*)malloc(sizeof(struct scriptCallFrame));
+    i->callframe = (struct mtclCallFrame*)malloc(sizeof(struct mtclCallFrame));
     i->callframe->vars = NULL;
     i->callframe->upvars = NULL; //added
     i->callframe->parent = NULL;
@@ -11,13 +12,13 @@ void scriptInitInterp(struct scriptInterp *i) {
     i->result = strdup("");
 }
 
-void scriptSetResult(struct scriptInterp *i, const char *s) {
+void mtclSetResult(struct mtclInterp *i, const char *s) {
     free(i->result);
     i->result = strdup(s);
 }
 
-struct scriptUpvar *scriptGetUpvar(struct scriptInterp *i,const char *name) {
-  struct scriptUpvar *uv = i->callframe->upvars;
+struct mtclUpvar *mtclGetUpvar(struct mtclInterp *i,const char *name) {
+  struct mtclUpvar *uv = i->callframe->upvars;
 
   while(uv) {
     if (strcmp(uv->name,name) == 0) {
@@ -30,15 +31,15 @@ struct scriptUpvar *scriptGetUpvar(struct scriptInterp *i,const char *name) {
   return NULL;
 }
 
-struct scriptVar *scriptGetVar(struct scriptInterp *i, const char *name,
+struct mtclVar *mtclGetVar(struct mtclInterp *i, const char *name,
                              const char *val) {
-  struct scriptVar *v;
-  struct scriptCallFrame *tmpCf=i->callframe;
+  struct mtclVar *v;
+  struct mtclCallFrame *tmpCf=i->callframe;
   const char *varName=name;
-  struct scriptUpvar *uv;
+  struct mtclUpvar *uv;
 
   //follow upvars
-  while(uv = scriptGetUpvar(i,name)) {
+  while((uv = mtclGetUpvar(i,name))) {
     i->callframe=i->callframe->parent;
     name=uv->varName;
 
@@ -70,7 +71,7 @@ struct scriptVar *scriptGetVar(struct scriptInterp *i, const char *name,
 
   //no var found, create/set value
   if(val) {
-    v = (struct scriptVar*)malloc(sizeof(*v));
+    v = (struct mtclVar*)malloc(sizeof(*v));
     v->name = strdup(name);
     v->val = strdup(val);
     v->next = i->callframe->vars;
@@ -81,36 +82,36 @@ struct scriptVar *scriptGetVar(struct scriptInterp *i, const char *name,
   return NULL;
 }
 
-int scriptSetVar(struct scriptInterp *i, const char *name, const char *val) {
-  struct scriptVar *v = scriptGetVar(i,name,val);
-  return SCRIPT_OK;
+int mtclSetVar(struct mtclInterp *i, const char *name, const char *val) {
+  struct mtclVar *v = mtclGetVar(i,name,val);
+  return MTCL_OK;
 }
 
-int scriptSetUpvar(struct scriptInterp *i, const char *name, const char *varName) {
+int mtclSetUpvar(struct mtclInterp *i, const char *name, const char *varName) {
 
     if(!i->callframe->parent) {
       char errbuf[1024];
       snprintf(errbuf,1024,"error : upvar '%s %s' called in global scope.",varName,name);
-      scriptSetResult(i,errbuf);
-      return SCRIPT_ERR;
+      mtclSetResult(i,errbuf);
+      return MTCL_ERR;
     }
 
-    struct scriptUpvar *uv = scriptGetUpvar(i,name);
+    struct mtclUpvar *uv = mtclGetUpvar(i,name);
     if(uv) {
       free(uv->varName);
     } else {
-      uv = (struct scriptUpvar*)malloc(sizeof(*uv));
+      uv = (struct mtclUpvar*)malloc(sizeof(*uv));
       uv->name = strdup(name);
       uv->next = i->callframe->upvars;
       i->callframe->upvars = uv;
     }
 
     uv->varName = strdup(varName);
-    return SCRIPT_OK;
+    return MTCL_OK;
 }
 
-struct scriptCmd *scriptGetCommand(struct scriptInterp *i, const char *name) {
-    struct scriptCmd *c = i->commands;
+struct mtclCmd *mtclGetCommand(struct mtclInterp *i, const char *name) {
+    struct mtclCmd *c = i->commands;
     while(c) {
         if (strcmp(c->name,name) == 0) return c;
         c = c->next;
@@ -118,29 +119,29 @@ struct scriptCmd *scriptGetCommand(struct scriptInterp *i, const char *name) {
     return NULL;
 }
 
-int scriptRegisterCommand(struct scriptInterp *i, const char *name, scriptCmdFunc f, void *privdata) {
-    struct scriptCmd *c = scriptGetCommand(i,name);
+int mtclRegisterCommand(struct mtclInterp *i, const char *name, mtclCmdFunc f, void *privdata) {
+    struct mtclCmd *c = mtclGetCommand(i,name);
     char errbuf[1024];
     if (c) {
         snprintf(errbuf,1024,"Command '%s' already defined",name);
-        scriptSetResult(i,errbuf);
-        return SCRIPT_ERR;
+        mtclSetResult(i,errbuf);
+        return MTCL_ERR;
     }
-    c = (struct scriptCmd*)malloc(sizeof(*c));
+    c = (struct mtclCmd*)malloc(sizeof(*c));
     c->name = strdup(name);
     c->func = f;
     c->privdata = privdata;
     c->next = i->commands;
     i->commands = c;
-    return SCRIPT_OK;
+    return MTCL_OK;
 }
 
 /* ACTUAL COMMANDS! */
 
 
-void scriptDropCallFrame(struct scriptInterp *i) {
-    struct scriptCallFrame *cf = i->callframe;
-    struct scriptVar *v = cf->vars, *t;
+void mtclDropCallFrame(struct mtclInterp *i) {
+    struct mtclCallFrame *cf = i->callframe;
+    struct mtclVar *v = cf->vars, *t;
     while(v) {
         t = v->next;
         free(v->name);
@@ -152,12 +153,12 @@ void scriptDropCallFrame(struct scriptInterp *i) {
     free(cf);
 }
 
-int scriptCommandCallProc(struct scriptInterp *i, int argc, char **argv, const void *pd) {
+int mtclCommandCallProc(struct mtclInterp *i, int argc, char **argv, const void *pd) {
   const char **x=(const char**)pd, *alist=x[0], *body=x[1];
   char *p=strdup(alist), *tofree;
 
-    struct scriptCallFrame *cf = (struct scriptCallFrame*)malloc(sizeof(*cf));
-    int arity = 0, done = 0, errcode = SCRIPT_OK;
+    struct mtclCallFrame *cf = (struct mtclCallFrame*)malloc(sizeof(*cf));
+    int arity = 0, done = 0, errcode = MTCL_OK;
     char errbuf[1024];
     cf->vars = NULL;
     cf->upvars=NULL;//added
@@ -173,19 +174,19 @@ int scriptCommandCallProc(struct scriptInterp *i, int argc, char **argv, const v
         if (p == start) break;
         if (*p == '\0') done=1; else *p = '\0';
         if (++arity > argc-1) goto arityerr;
-        scriptSetVar(i,start,argv[arity]);
+        mtclSetVar(i,start,argv[arity]);
         p++;
         if (done) break;
     }
     free(tofree);
     if (arity != argc-1) goto arityerr;
-    errcode = scriptEval(i,body);
-    if (errcode == SCRIPT_RETURN) errcode = SCRIPT_OK;
-    scriptDropCallFrame(i); /* remove the called proc callframe */
+    errcode = mtclEval(i,body);
+    if (errcode == MTCL_RETURN) errcode = MTCL_OK;
+    mtclDropCallFrame(i); /* remove the called proc callframe */
     return errcode;
 arityerr:
     snprintf(errbuf,1024,"Proc '%s' called with wrong arg num",argv[0]);
-    scriptSetResult(i,errbuf);
-    scriptDropCallFrame(i); /* remove the called proc callframe */
-    return SCRIPT_ERR;
+    mtclSetResult(i,errbuf);
+    mtclDropCallFrame(i); /* remove the called proc callframe */
+    return MTCL_ERR;
 }

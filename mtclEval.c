@@ -7,11 +7,11 @@
 #define snprintf _snprintf
 #endif
 
-#include "scriptEvalParse.h"
-#include "scriptEval.h"
+#include "mtclEvalParse.h"
+#include "mtclEval.h"
 
-struct scriptEvalInfo {
-  struct scriptInterp *i;
+struct mtclEvalInfo {
+  struct mtclInterp *i;
   char *text;
   char *curWord;
   char **words;
@@ -20,7 +20,7 @@ struct scriptEvalInfo {
   int retcode;
 };
 
-void scriptEvalAppendCurWord(struct scriptEvalInfo *info,
+void mtclEvalAppendCurWord(struct mtclEvalInfo *info,
                             const char *a,const char *b) {
   size_t m=(b-a);
   size_t n=info->curWord?strlen(info->curWord):0;
@@ -29,86 +29,86 @@ void scriptEvalAppendCurWord(struct scriptEvalInfo *info,
   info->curWord[n+m]='\0';
 }
 
-bool scriptEvalParsePartCallback(void *data,const char *a,const char *b) {
+bool mtclEvalParsePartCallback(void *data,const char *a,const char *b) {
   //on receiving part of a word
-#ifdef SCRIPT_EVAL_DEBUG
+#ifdef MTCL_EVAL_DEBUG
   printf("%.*s",(int)(b-a),a);
 #else
-  struct scriptEvalInfo *info;
-  info=(struct scriptEvalInfo*)data;
+  struct mtclEvalInfo *info;
+  info=(struct mtclEvalInfo*)data;
 
-  scriptEvalAppendCurWord(info,a,b);
-  info->retcode=SCRIPT_OK; //probably not necessary
+  mtclEvalAppendCurWord(info,a,b);
+  info->retcode=MTCL_OK; //probably not necessary
 #endif
 
   return true;
 }
 
-bool scriptEvalParseVarCallback(void *data,const char *a,const char *b) {
+bool mtclEvalParseVarCallback(void *data,const char *a,const char *b) {
   //on receiving a var part of a word
-#ifdef SCRIPT_EVAL_DEBUG
+#ifdef MTCL_EVAL_DEBUG
   printf("${%.*s}",(int)(b-a),a);
 #else
-  struct scriptEvalInfo *info;
-  info=(struct scriptEvalInfo*)data;
+  struct mtclEvalInfo *info;
+  info=(struct mtclEvalInfo*)data;
 
   size_t tmpLen=b-a;
   char *tmp=(char*)malloc(tmpLen+1);
   memcpy(tmp,a,tmpLen);
   tmp[tmpLen]='\0';
 
-  struct scriptVar *pv=scriptGetVar(info->i,tmp,NULL);
+  struct mtclVar *pv=mtclGetVar(info->i,tmp,NULL);
 
   if(!pv) {
     snprintf(info->errbuf,1024,"No such variable '%s'",tmp);
-    scriptSetResult(info->i,info->errbuf);
-    info->retcode=SCRIPT_ERR;
+    mtclSetResult(info->i,info->errbuf);
+    info->retcode=MTCL_ERR;
     return false;
   }
 
-  scriptEvalAppendCurWord(info,pv->val,pv->val+strlen(pv->val));
+  mtclEvalAppendCurWord(info,pv->val,pv->val+strlen(pv->val));
   free(tmp);
-  info->retcode=SCRIPT_OK; //probably not necessary
+  info->retcode=MTCL_OK; //probably not necessary
 #endif
 
   return true;
 }
 
-bool scriptEvalParseCmdCallback(void *data,const char *a,const char *b) {
+bool mtclEvalParseCmdCallback(void *data,const char *a,const char *b) {
   //on receiving a cmd part of a word
-#ifdef SCRIPT_EVAL_DEBUG
+#ifdef MTCL_EVAL_DEBUG
   printf("[%.*s]",(int)(b-a),a);
 #else
-  struct scriptEvalInfo *info;
-  info=(struct scriptEvalInfo*)data;
+  struct mtclEvalInfo *info;
+  info=(struct mtclEvalInfo*)data;
 
   size_t tmpLen=b-a;
   char *tmp=(char*)malloc(tmpLen+1);
   memcpy(tmp,a,tmpLen);
   tmp[tmpLen]='\0';
 
-  info->retcode=scriptEval(info->i,tmp);
+  info->retcode=mtclEval(info->i,tmp);
   free(tmp);
 
   //on return/break/continue status it must stop evaluating
-  if(info->retcode != SCRIPT_OK) {
+  if(info->retcode != MTCL_OK) {
     return false;
   }
 
-  scriptEvalAppendCurWord(info,info->i->result,
+  mtclEvalAppendCurWord(info,info->i->result,
                          info->i->result+strlen(info->i->result));
 #endif
 
   return true;
 }
 
-bool scriptEvalParseWordEndCallback(void *data) {
+bool mtclEvalParseWordEndCallback(void *data) {
   //on end of word
-#ifdef SCRIPT_EVAL_DEBUG
+#ifdef MTCL_EVAL_DEBUG
   printf("\n");
 #else
-  struct scriptEvalInfo *info;
-  info=(struct scriptEvalInfo*)data;
+  struct mtclEvalInfo *info;
+  info=(struct mtclEvalInfo*)data;
 
   if(info->wordsNum >= info->wordsMaxNum) {
     info->words=(char**)realloc(info->words,
@@ -122,29 +122,29 @@ bool scriptEvalParseWordEndCallback(void *data) {
   return true;
 }
 
-bool scriptEvalParseStmtEndCallback(void *data) {
+bool mtclEvalParseStmtEndCallback(void *data) {
   //on end of stmt
-#ifdef SCRIPT_EVAL_DEBUG
+#ifdef MTCL_EVAL_DEBUG
   printf(";\n");
 #else
-  struct scriptEvalInfo *info;
-  info=(struct scriptEvalInfo*)data;
+  struct mtclEvalInfo *info;
+  info=(struct mtclEvalInfo*)data;
   int j;
-  struct scriptCmd *c;
+  struct mtclCmd *c;
 
-  c=scriptGetCommand(info->i,info->words[0]);
+  c=mtclGetCommand(info->i,info->words[0]);
 
   if(!c) {
     snprintf(info->errbuf,1024,"No such command '%s'",info->words[0]);
-    scriptSetResult(info->i,info->errbuf);
-    info->retcode=SCRIPT_ERR;
+    mtclSetResult(info->i,info->errbuf);
+    info->retcode=MTCL_ERR;
     return false;
   }
 
-  scriptSetResult(info->i,"");
+  mtclSetResult(info->i,"");
   info->retcode = c->func(info->i,info->wordsNum,info->words,c->privdata);
 
-  if(info->retcode != SCRIPT_OK) {
+  if(info->retcode != MTCL_OK) {
     return false;
   }
 
@@ -159,7 +159,7 @@ bool scriptEvalParseStmtEndCallback(void *data) {
   return true;
 }
 
-void scriptEvalParseErr(const char *lbl,struct scriptEvalInfo *info,const char *p) {
+void mtclEvalParseErr(const char *lbl,struct mtclEvalInfo *info,const char *p) {
   int row=1,col=1;
   const char *x=info->text;
   const char *start=info->text;
@@ -186,40 +186,40 @@ void scriptEvalParseErr(const char *lbl,struct scriptEvalInfo *info,const char *
   printf("%*s%s\n", col, "", "^");
 }
 
-void scriptEvalParseErrCallback(void *data,const char *p) {
-  struct scriptEvalInfo *info;
-  info=(struct scriptEvalInfo*)data;
+void mtclEvalParseErrCallback(void *data,const char *p) {
+  struct mtclEvalInfo *info;
+  info=(struct mtclEvalInfo*)data;
 
-  scriptEvalParseErr("parse error",info,p);
+  mtclEvalParseErr("parse error",info,p);
 }
 
-void scriptEvalParseParenErrCallback(void *data,const char *p) {
-  struct scriptEvalInfo *info;
-  info=(struct scriptEvalInfo*)data;
+void mtclEvalParseParenErrCallback(void *data,const char *p) {
+  struct mtclEvalInfo *info;
+  info=(struct mtclEvalInfo*)data;
 
-  scriptEvalParseErr("no matching paren error",info,p);
+  mtclEvalParseErr("no matching paren error",info,p);
 }
 
-void scriptEvalParseRunErrCallback(void *data,const char *p) {
-  struct scriptEvalInfo *info;
-  info=(struct scriptEvalInfo*)data;
+void mtclEvalParseRunErrCallback(void *data,const char *p) {
+  struct mtclEvalInfo *info;
+  info=(struct mtclEvalInfo*)data;
 
-  // scriptEvalParseErr("runerr",info,p);
+  // mtclEvalParseErr("runerr",info,p);
   //todo
 }
 
-int scriptEval(struct scriptInterp *i,const char *text) {
-  struct scriptEvalInfo info;
+int mtclEval(struct mtclInterp *i,const char *text) {
+  struct mtclEvalInfo info;
   info.i=i;
   info.text=strdup(text);
   info.curWord=0;
   info.words=0;
   info.wordsNum=0;
   info.wordsMaxNum=0;
-  info.retcode=SCRIPT_OK;
+  info.retcode=MTCL_OK;
 
   //
-  scriptEvalParse(info.text,(void*)(&info));
+  mtclEvalParse(info.text,(void*)(&info));
 
   //
   int j;

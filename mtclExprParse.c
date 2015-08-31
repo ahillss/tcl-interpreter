@@ -25,22 +25,22 @@
 #include <stdbool.h>
 #endif
 
-#ifdef SCRIPT_EXPR_PARSE_TEST
-#define scriptExprParsePartCallback(DATA,A,B) 1
-#define scriptExprParseVarCallback(DATA,A,B) 1
-#define scriptExprParseCmdCallback(DATA,A,B) 1
-#define scriptExprParseWordEndCallback(DATA) 1
-#define scriptExprParseMathEndCallback(DATA,A,B) 1
-#define scriptExprParseParenErrCallback(D,P)
-#define scriptExprParseErrCallback(D,P)
-#define scriptExprParseRunErrCallback(D,P)
+#ifdef MTCL_EXPR_PARSE_TEST
+#define mtclExprParsePartCallback(DATA,A,B) 1
+#define mtclExprParseVarCallback(DATA,A,B) 1
+#define mtclExprParseCmdCallback(DATA,A,B) 1
+#define mtclExprParseWordEndCallback(DATA) 1
+#define mtclExprParseMathEndCallback(DATA,A,B) 1
+#define mtclExprParseParenErrCallback(D,P)
+#define mtclExprParseErrCallback(D,P)
+#define mtclExprParseRunErrCallback(D,P)
 	
-#define SCRIPT_EXPR_PARSE_DEBUG
+#define MTCL_EXPR_PARSE_DEBUG
 #else
-#include "scriptExprParse.h"
+#include "mtclExprParse.h"
 #endif
 
-#ifndef SCRIPT_EXPR_PARSE_DEBUG
+#ifndef MTCL_EXPR_PARSE_DEBUG
 #define DEBUG_MARK(X,P)
 #define DEBUG_VAL(X,A,B) 
 #else
@@ -56,9 +56,9 @@
 
 #endif
 
-bool scriptExprParse(const char *text,void *extraData) {
+bool mtclExprParse(const char *text,void *extraData) {
   
-#line 62 "tmp/scriptExprParse.c"
+#line 62 "tmp/mtclExprParse.c"
 static const char _exprParse_actions[] = {
 	0, 1, 1, 1, 13, 1, 14, 1, 
 	15, 1, 18, 1, 19, 1, 20, 1, 
@@ -288,7 +288,7 @@ static const int exprParse_en_main = 63;
   } fsm;
   
   
-#line 292 "tmp/scriptExprParse.c"
+#line 292 "tmp/mtclExprParse.c"
 	{
 	 fsm.cs = exprParse_start;
 	 fsm.top = 0;
@@ -309,7 +309,7 @@ static const int exprParse_en_main = 63;
   bool isMath=false;
   
   
-#line 313 "tmp/scriptExprParse.c"
+#line 313 "tmp/mtclExprParse.c"
 	{
 	int _klen;
 	unsigned int _trans;
@@ -406,12 +406,12 @@ _match:
 
   if(!isMath) {
   if(mStart<mEnd) { //APPEND_WORD
-    if(!scriptExprParsePartCallback(extraData,mStart,mEnd)) {
+    if(!mtclExprParsePartCallback(extraData,mStart,mEnd)) {
       {( fsm.p)++; goto _out; }
     }
   }
   
-  if(!scriptExprParseWordEndCallback(extraData)) { //APPEND_WORDS
+  if(!mtclExprParseWordEndCallback(extraData)) { //APPEND_WORDS
     {( fsm.p)++; goto _out; }
   }
   }
@@ -448,7 +448,7 @@ _match:
   DEBUG_VAL("===========v",mStart,mEnd);
 
   if(mStart<mEnd) { //APPEND_WORD
-    if(!scriptExprParsePartCallback(extraData,mStart,mEnd)) {
+    if(!mtclExprParsePartCallback(extraData,mStart,mEnd)) {
       {( fsm.p)++; goto _out; }
     }
   }
@@ -464,7 +464,7 @@ _match:
   DEBUG_MARK("- - - var:b",( fsm.p));
   DEBUG_VAL("==========vv",a,b);
 
-  if(!scriptExprParseVarCallback(extraData,a,b)) { //APPEND_WORD_VAR
+  if(!mtclExprParseVarCallback(extraData,a,b)) { //APPEND_WORD_VAR
     runErr=true;
     {( fsm.p)++; goto _out; }
   }
@@ -491,12 +491,12 @@ _match:
   DEBUG_VAL("==========cc",a,b);
 
   if(mStart<mEnd) { //APPEND_WORD
-    if(!scriptExprParsePartCallback(extraData,mStart,mEnd)) {
+    if(!mtclExprParsePartCallback(extraData,mStart,mEnd)) {
       {( fsm.p)++; goto _out; }
     }
   }
    
-  if(!scriptExprParseCmdCallback(extraData,a,b)) { //APPEND_WORD_CMD
+  if(!mtclExprParseCmdCallback(extraData,a,b)) { //APPEND_WORD_CMD
     runErr=true;
     {( fsm.p)++; goto _out; }
   }
@@ -538,7 +538,7 @@ _match:
   DEBUG_MARK("- - - bstr:b",( fsm.p));
   DEBUG_VAL("==========bb",a,b);
 
-  if(!scriptExprParsePartCallback(extraData,a,b)) { //APPEND_WORD
+  if(!mtclExprParsePartCallback(extraData,a,b)) { //APPEND_WORD
     {( fsm.p)++; goto _out; }
   }
 
@@ -577,7 +577,7 @@ _match:
   DEBUG_MARK("- - - math:b",( fsm.p));
   DEBUG_VAL("===========m",wStart,( fsm.p));
   
-  if(!scriptExprParseMathEndCallback(extraData,wStart,( fsm.p))) {
+  if(!mtclExprParseMathEndCallback(extraData,wStart,( fsm.p))) {
     {( fsm.p)++; goto _out; }
   }
   
@@ -616,7 +616,7 @@ _match:
 	{{
 { fsm.stack[ fsm.top++] =  fsm.cs;  fsm.cs = 62; goto _again;}}}
 	break;
-#line 620 "tmp/scriptExprParse.c"
+#line 620 "tmp/mtclExprParse.c"
 		}
 	}
 
@@ -640,12 +640,12 @@ _again:
 
   if(!isMath) {
   if(mStart<mEnd) { //APPEND_WORD
-    if(!scriptExprParsePartCallback(extraData,mStart,mEnd)) {
+    if(!mtclExprParsePartCallback(extraData,mStart,mEnd)) {
       {( fsm.p)++; goto _out; }
     }
   }
   
-  if(!scriptExprParseWordEndCallback(extraData)) { //APPEND_WORDS
+  if(!mtclExprParseWordEndCallback(extraData)) { //APPEND_WORDS
     {( fsm.p)++; goto _out; }
   }
   }
@@ -668,7 +668,7 @@ _again:
   DEBUG_VAL("===========v",mStart,mEnd);
 
   if(mStart<mEnd) { //APPEND_WORD
-    if(!scriptExprParsePartCallback(extraData,mStart,mEnd)) {
+    if(!mtclExprParsePartCallback(extraData,mStart,mEnd)) {
       {( fsm.p)++; goto _out; }
     }
   }
@@ -684,7 +684,7 @@ _again:
   DEBUG_MARK("- - - var:b",( fsm.p));
   DEBUG_VAL("==========vv",a,b);
 
-  if(!scriptExprParseVarCallback(extraData,a,b)) { //APPEND_WORD_VAR
+  if(!mtclExprParseVarCallback(extraData,a,b)) { //APPEND_WORD_VAR
     runErr=true;
     {( fsm.p)++; goto _out; }
   }
@@ -703,12 +703,12 @@ _again:
   DEBUG_VAL("==========cc",a,b);
 
   if(mStart<mEnd) { //APPEND_WORD
-    if(!scriptExprParsePartCallback(extraData,mStart,mEnd)) {
+    if(!mtclExprParsePartCallback(extraData,mStart,mEnd)) {
       {( fsm.p)++; goto _out; }
     }
   }
    
-  if(!scriptExprParseCmdCallback(extraData,a,b)) { //APPEND_WORD_CMD
+  if(!mtclExprParseCmdCallback(extraData,a,b)) { //APPEND_WORD_CMD
     runErr=true;
     {( fsm.p)++; goto _out; }
   }
@@ -733,7 +733,7 @@ _again:
   DEBUG_MARK("- - - bstr:b",( fsm.p));
   DEBUG_VAL("==========bb",a,b);
 
-  if(!scriptExprParsePartCallback(extraData,a,b)) { //APPEND_WORD
+  if(!mtclExprParsePartCallback(extraData,a,b)) { //APPEND_WORD
     {( fsm.p)++; goto _out; }
   }
 
@@ -762,7 +762,7 @@ _again:
   DEBUG_MARK("- - - math:b",( fsm.p));
   DEBUG_VAL("===========m",wStart,( fsm.p));
   
-  if(!scriptExprParseMathEndCallback(extraData,wStart,( fsm.p))) {
+  if(!mtclExprParseMathEndCallback(extraData,wStart,( fsm.p))) {
     {( fsm.p)++; goto _out; }
   }
   
@@ -771,7 +771,7 @@ _again:
   mStart=( fsm.p);
 }
 	break;
-#line 775 "tmp/scriptExprParse.c"
+#line 775 "tmp/mtclExprParse.c"
 		}
 	}
 	}
@@ -782,22 +782,22 @@ _again:
 #line 303 "expr.rl"
 
   if(runErr) {
-    scriptExprParseRunErrCallback(extraData,fsm.p);
+    mtclExprParseRunErrCallback(extraData,fsm.p);
 	return false;
   } else if(fsm.top != 0 || quoteParenErr) {
     DEBUG_MARK("paren err",fsm.p);
-    scriptExprParseParenErrCallback(extraData,prnStart);
+    mtclExprParseParenErrCallback(extraData,prnStart);
 	return false;
   } else if(fsm.cs < 63) {
     DEBUG_MARK("err",fsm.p);
-    scriptExprParseErrCallback(extraData,fsm.p);
+    mtclExprParseErrCallback(extraData,fsm.p);
 	return false;
   } 
   
   return true;
 }
 
-#ifdef SCRIPT_EXPR_PARSE_TEST
+#ifdef MTCL_EXPR_PARSE_TEST
 char *stringFromFile(const char *fn) {
   FILE *file = fopen(fn, "rb");
   if(!file) { return 0;  }
@@ -813,7 +813,7 @@ char *stringFromFile(const char *fn) {
 
 int main() {
   char *text=stringFromFile("tests/exprtest.txt");
-  scriptExprParse(text,0);
+  mtclExprParse(text,0);
   free(text);
   printf("done\n");
   return 0;

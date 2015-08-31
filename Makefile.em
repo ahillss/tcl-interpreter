@@ -1,22 +1,16 @@
 OUTDIR = em
-OUTPUT=$(OUTDIR)/demo
+OUTPUT=$(OUTDIR)/mtcl.js
 CC=emcc
 EXT = c
 CPPFLAGS :=
 
-srcs:=$(wildcard *.$(EXT))
-hdrs:=$(wildcard *.h)
+srcs:=$(wildcard mtcl*.$(EXT))
+hdrs:=$(wildcard mtcl*.h)
 
-all: $(srcs) $(OUTPUT).html
+all: $(srcs) $(OUTPUT)
 
 .PHONY: all test
 
-$(OUTPUT).html: $(srcs) $(hdrs)
+$(OUTPUT): $(srcs) $(hdrs)
 	@mkdir -p $(@D)
-	$(CC) $(CPPFLAGS) $(srcs) --emrun -o $(OUTPUT).html 
-
-test:
-	emrun $(OUTPUT).html
-
-clean:
-	rm $(OUTPUT).html $(OUTPUT).js $(OUTPUT).data
+	$(CC) $(CPPFLAGS) $(srcs) -o $(OUTPUT) -s EXPORTED_FUNCTIONS="['mtclInitInterp']"

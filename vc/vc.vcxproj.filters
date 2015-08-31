@@ -18,42 +18,42 @@
     <ClCompile Include="..\main.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\script.c">
+    <ClCompile Include="..\mtcl.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\scriptCmd.c">
+    <ClCompile Include="..\mtclCmd.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\scriptEval.c">
+    <ClCompile Include="..\mtclEval.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\scriptExpr.c">
+    <ClCompile Include="..\mtclExpr.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\scriptExprParse.c">
+    <ClCompile Include="..\mtclExprParse.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\scriptEvalParse.c">
+    <ClCompile Include="..\mtclEvalParse.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\script.h">
+    <ClInclude Include="..\mtcl.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\scriptCmd.h">
+    <ClInclude Include="..\mtclCmd.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\scriptEval.h">
+    <ClInclude Include="..\mtclEval.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\scriptExpr.h">
+    <ClInclude Include="..\mtclExpr.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\scriptExprParse.h">
+    <ClInclude Include="..\mtclExprParse.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\scriptEvalParse.h">
+    <ClInclude Include="..\mtclEvalParse.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
