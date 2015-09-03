@@ -163,7 +163,7 @@ action braceEnd {
 action charEnd {  
   DEBUG_MARK("- - - str_char:b",fpc);
 
-  wStart=fpc;
+  wStart=fpc; //what was this for?
   mEnd=fpc;
 }
 

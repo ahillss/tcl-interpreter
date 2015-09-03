@@ -18,15 +18,15 @@ action wordEnd {
   DEBUG_VAL("===========w",mStart,mEnd);
 
   if(!isMath) {
-  if(mStart<mEnd) { //APPEND_WORD
-    if(!mtclExprParsePartCallback(extraData,mStart,mEnd)) {
+    if(mStart<mEnd) { //APPEND_WORD
+      if(!mtclExprParsePartCallback(extraData,mStart,mEnd)) {
+        fbreak;
+      }
+    }
+  
+    if(!mtclExprParseWordEndCallback(extraData)) { //APPEND_WORDS
       fbreak;
     }
-  }
-  
-  if(!mtclExprParseWordEndCallback(extraData)) { //APPEND_WORDS
-    fbreak;
-  }
   }
   
   isMath=false;
@@ -143,7 +143,7 @@ action braceEnd {
 action charEnd {  
   DEBUG_MARK("- - - str_char:b",fpc);
 
-  wStart=fpc;
+  //wStart=fpc; //what was this for?
   mEnd=fpc;
 }
 
@@ -199,11 +199,11 @@ bstr = clybrace >(gword,1) @(gword,1) >braceStart %braceEnd;
 
 math1 =('-' | '+' | '~' | '!' | '*' | '/' |
         '%' | '<' | '>' | '&' | '^' | '|' |
-        '?') >(gword,2) @(gword,1) >mathStart %mathEnd;
+        '?')  @(gword,2) >mathStart %mathEnd;
 		
 math2 =('**' | '<<' | '>>' | '<=' | '>=' | 
         '==' | '!=' | '||' | '&&' |
-        '//') >(gword,3) @(gword,2) >mathStart %mathEnd;
+        '//')  @(gword,3) >mathStart %mathEnd;
 		
 mathf =('eq' | 'ne' | 'in' | 'ni' | 'neg' |
         'abs' | 'acos' | 'asin' | 'atan' |
@@ -214,7 +214,7 @@ mathf =('eq' | 'ne' | 'in' | 'ni' | 'neg' |
         'min' | 'pow' | 'rand' | 'round' | 
         'sin' | 'sinh' | 'sqrt' | 'srand' | 
         'tan' | 'tanh' |
-        'wide') >(gword,4) @(gword,3) >mathStart %mathEnd;
+        'wide') @(gword,4) >mathStart %mathEnd;
 		
 word = (mathf|math2|math1|bstr|qstr|str) >wordStart %wordEnd;
 

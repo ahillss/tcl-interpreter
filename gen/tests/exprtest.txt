@@ -1,1 +1,1 @@
-< i 5
+<= cos iii 5 abc[def]ghi

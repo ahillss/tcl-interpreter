@@ -30,7 +30,7 @@ A subset of TCL, though the expr command uses polish notation instead of the inf
 * make sure errors propagate through eval and expr calls
 * varargs for procs
 * backslash escaping spaces, tabs, quotes, brackets etc
-* test guards in exprParse ragel file
+* test parsers for certain conditions
 * in eval parser, check first word of statement is a command?
 * add callback for when undefined commands are called?
 * make syntax shortcuts optional (e.g. for $a and ${a})?

@@ -48,7 +48,7 @@ bool mtclExprPushOp(const char *name,const char *a,const char *b,
   // if(strncmp(name,opName,strlen(name))!=0) {
   //   return false;
   // }
-  printf("'%.*s'\n",(int)(b-a),a);
+  // printf("'%.*s'\n",(int)(b-a),a);
   while(name[0]!='\0') {
     if(a==b || name[0]!=a[0]) {
       return false;
@@ -380,17 +380,17 @@ bool mtclExprParseMathEndCallback(void *data,const char *a,const char *b) {
   info->retcode=MTCL_OK;
 
 
-  if(mtclExprPushOp("&&",a,b,mtclExprAnd,info) |
-     mtclExprPushOp("||",a,b,mtclExprOr,info) |
-     mtclExprPushOp("==",a,b,mtclExprEq,info) |
-     mtclExprPushOp("!=",a,b,mtclExprNe,info) |
-     mtclExprPushOp(">=",a,b,mtclExprGe,info) |
-     mtclExprPushOp("<=",a,b,mtclExprLt,info) |
-     mtclExprPushOp(">",a,b,mtclExprGt,info) |
-     mtclExprPushOp("<",a,b,mtclExprLt,info) |
-     mtclExprPushOp("+",a,b,mtclExprAdd,info) |
-     mtclExprPushOp("-",a,b,mtclExprSub,info) |
-     mtclExprPushOp("*",a,b,mtclExprMul,info) |
+  if(mtclExprPushOp("&&",a,b,mtclExprAnd,info) ||
+     mtclExprPushOp("||",a,b,mtclExprOr,info) ||
+     mtclExprPushOp("==",a,b,mtclExprEq,info) ||
+     mtclExprPushOp("!=",a,b,mtclExprNe,info) ||
+     mtclExprPushOp(">=",a,b,mtclExprGe,info) ||
+     mtclExprPushOp("<=",a,b,mtclExprLe,info) ||
+     mtclExprPushOp(">",a,b,mtclExprGt,info) ||
+     mtclExprPushOp("<",a,b,mtclExprLt,info) ||
+     mtclExprPushOp("+",a,b,mtclExprAdd,info) ||
+     mtclExprPushOp("-",a,b,mtclExprSub,info) ||
+     mtclExprPushOp("*",a,b,mtclExprMul,info) ||
      mtclExprPushOp("/",a,b,mtclExprDiv,info)) {
     return true;
   }
