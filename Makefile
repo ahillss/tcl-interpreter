@@ -1,6 +1,6 @@
 OUTDIR = bin
 OUTFILE = $(OUTDIR)/mtcl
-CC = g++
+CC = gcc
 EXT = c
 
 CPPFLAGS :=

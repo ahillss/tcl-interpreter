@@ -1,16 +1,61 @@
 <html>
   <head>
     <title>emscripten library demo</title>
-	 <script type="text/javascript" src="script.js"></script>
-	 <script type="text/javascript">
+	  <script type="text/javascript" src="mtcl.js"></script>
+	  <script type="text" id="common.tcl">
 
-function onStart() {
-  //alert("123");
+proc incr {x} {
+  upvar $x y
+  set y [expr {+ $y 1}]
 }
 
+proc decr {x} {
+  upvar $x y
+  set y [expr {- $y 1}]
+}
+
+proc for {start test next body} {
+  uplevel $start
+  uplevel "while {$test} {
+    $body
+	$next
+  }"
+}
+      </script>
+      <script type="text" id="test.tcl">
+for {set i 3} {< $i 5} {incr i} {
+  for {set j 7} {< $j 10} {set j [expr {+ $j 1}]} {
+    puts "$i $j"
+  }
+}
+
+puts "expr answer is [expr {+ 2 * 3 / 9 4}]"
+
+      </script>
+	  <script type="text/javascript">
+var instance;
+var inputArea;
+var outputArea;
+function onStart() {
+  inputArea=document.getElementById("input");
+  outputArea=document.getElementById("output");
+  inputArea.value=document.getElementById("test.tcl").text;
+  Module['print'] = function(text) { outputArea.value+=text+"\n";};
+  Module['printErr'] = function(text) { outputArea.value+=text+"\n";};
+  instance = new Module.mtclInterpWrapper();
+  instance.eval(document.getElementById("common.tcl").text);
+
+  
+  
+}
+function onRun() {
+  instance.eval(inputArea.value);
+}
 	 </script>
   </head>
   <body onload="onStart();">
-  
+    <textarea id="input" style="width:640;height:280"></textarea>
+	<button id="run" style="width:640;" onclick="onRun()">Run</button>
+    <textarea id="output" style="width:640;height:180"></textarea>
   </body>
 </html>
