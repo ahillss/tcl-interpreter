@@ -15,7 +15,7 @@
 
 enum {MTCL_EXPR_VAL_NONE,MTCL_EXPR_VAL_STR,
       MTCL_EXPR_VAL_INT,MTCL_EXPR_VAL_FLOAT};
-	  
+
 struct mtclExprInfo;
 
 typedef bool (*mtclExprOpFunc)(struct mtclExprInfo*);
@@ -42,11 +42,19 @@ struct mtclExprInfo {
   struct mtclExprOp *opStk;
 };
 
-bool mtclExprPushOp(const char *name,const char *opName,
+bool mtclExprPushOp(const char *name,const char *a,const char *b,
                      mtclExprOpFunc func,struct mtclExprInfo *info) {
 
-  if(strncmp(name,opName,strlen(name))!=0) {
-    return false;
+  // if(strncmp(name,opName,strlen(name))!=0) {
+  //   return false;
+  // }
+  printf("'%.*s'\n",(int)(b-a),a);
+  while(name[0]!='\0') {
+    if(a==b || name[0]!=a[0]) {
+      return false;
+    }
+    name++;
+    a++;
   }
 
   struct mtclExprOp *op;
@@ -372,18 +380,18 @@ bool mtclExprParseMathEndCallback(void *data,const char *a,const char *b) {
   info->retcode=MTCL_OK;
 
 
-  if(mtclExprPushOp("&&",a,mtclExprAnd,info) |
-     mtclExprPushOp("||",a,mtclExprOr,info) |
-     mtclExprPushOp("==",a,mtclExprEq,info) |
-     mtclExprPushOp("!=",a,mtclExprNe,info) |
-     mtclExprPushOp(">=",a,mtclExprGe,info) |
-     mtclExprPushOp("<=",a,mtclExprLe,info) |
-     mtclExprPushOp(">",a,mtclExprGt,info) |
-     mtclExprPushOp("<",a,mtclExprLt,info) |
-     mtclExprPushOp("+",a,mtclExprAdd,info) |
-     mtclExprPushOp("-",a,mtclExprSub,info) |
-     mtclExprPushOp("*",a,mtclExprMul,info) |
-     mtclExprPushOp("/",a,mtclExprDiv,info)) {
+  if(mtclExprPushOp("&&",a,b,mtclExprAnd,info) |
+     mtclExprPushOp("||",a,b,mtclExprOr,info) |
+     mtclExprPushOp("==",a,b,mtclExprEq,info) |
+     mtclExprPushOp("!=",a,b,mtclExprNe,info) |
+     mtclExprPushOp(">=",a,b,mtclExprGe,info) |
+     mtclExprPushOp("<=",a,b,mtclExprLt,info) |
+     mtclExprPushOp(">",a,b,mtclExprGt,info) |
+     mtclExprPushOp("<",a,b,mtclExprLt,info) |
+     mtclExprPushOp("+",a,b,mtclExprAdd,info) |
+     mtclExprPushOp("-",a,b,mtclExprSub,info) |
+     mtclExprPushOp("*",a,b,mtclExprMul,info) |
+     mtclExprPushOp("/",a,b,mtclExprDiv,info)) {
     return true;
   }
 

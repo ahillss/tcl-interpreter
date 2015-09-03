@@ -199,11 +199,11 @@ bstr = clybrace >(gword,1) @(gword,1) >braceStart %braceEnd;
 
 math1 =('-' | '+' | '~' | '!' | '*' | '/' |
         '%' | '<' | '>' | '&' | '^' | '|' |
-        '?') >(gword,2) @(gword,0) >mathStart %mathEnd;
+        '?') >(gword,2) @(gword,1) >mathStart %mathEnd;
 		
 math2 =('**' | '<<' | '>>' | '<=' | '>=' | 
         '==' | '!=' | '||' | '&&' |
-        '//') @(gword,3) >mathStart %mathEnd;
+        '//') >(gword,3) @(gword,2) >mathStart %mathEnd;
 		
 mathf =('eq' | 'ne' | 'in' | 'ni' | 'neg' |
         'abs' | 'acos' | 'asin' | 'atan' |
@@ -214,7 +214,7 @@ mathf =('eq' | 'ne' | 'in' | 'ni' | 'neg' |
         'min' | 'pow' | 'rand' | 'round' | 
         'sin' | 'sinh' | 'sqrt' | 'srand' | 
         'tan' | 'tanh' |
-        'wide') >(gword,4) @(gword,4) >mathStart %mathEnd;
+        'wide') >(gword,4) @(gword,3) >mathStart %mathEnd;
 		
 word = (mathf|math2|math1|bstr|qstr|str) >wordStart %wordEnd;
 
