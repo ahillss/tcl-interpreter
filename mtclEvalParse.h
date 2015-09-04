@@ -11,9 +11,8 @@ extern "C" {
 
   void mtclEvalParse(const char *text,void *extraData);
 
-  bool mtclEvalParsePartCallback(void *data,const char *a,const char *b);
-  bool mtclEvalParseVarCallback(void *data,const char *a,const char *b);
-  bool mtclEvalParseCmdCallback(void *data,const char *a,const char *b);
+  bool mtclEvalParseStrCallback(void *data,const char *a,const char *b,const char *x);
+  bool mtclEvalParseCmdCallback(void *data,const char *a,const char *b,const char *x);
   bool mtclEvalParseWordEndCallback(void *data);
   bool mtclEvalParseStmtEndCallback(void *data);
 

@@ -12,6 +12,13 @@ void mtclInitInterp(struct mtclInterp *i) {
     i->result = strdup("");
 }
 
+void mtclUninitInterp(struct mtclInterp *i) {
+
+  struct mtclCallFrame *cf=i->callframe;
+  struct mtclCmd *cmds=i->commands;
+  free(i->result);
+}
+
 void mtclSetResult(struct mtclInterp *i, const char *s) {
     free(i->result);
     i->result = strdup(s);

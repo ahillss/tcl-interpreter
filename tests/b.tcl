@@ -12,3 +12,15 @@ if {< 2 1} {
 } else {
   puts 22
 }
+
+proc foo {a b c} {
+  puts "$a $b $c"
+}
+
+foo 1 2 3
+
+proc foo {a b c} {
+  puts "$a $b $c"
+}
+
+foo 4 5 6

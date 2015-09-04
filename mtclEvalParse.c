@@ -1,22 +1,22 @@
 
 #line 1 "eval.rl"
  
-#line 211 "eval.rl"
+#line 248 "eval.rl"
 
 
   
 
 
-#line 216 "eval.rl"
+#line 253 "eval.rl"
 
-#line 217 "eval.rl"
+#line 254 "eval.rl"
 
-#line 218 "eval.rl"
+#line 255 "eval.rl"
 
-#line 219 "eval.rl"
+#line 256 "eval.rl"
 
 
-#line 228 "eval.rl"
+#line 265 "eval.rl"
 
 
 
@@ -29,9 +29,8 @@
 #endif
 
 #ifdef MTCL_EVAL_PARSE_TEST
-#define mtclEvalParsePartCallback(DATA,A,B) 1
-#define mtclEvalParseVarCallback(DATA,A,B) 1
-#define mtclEvalParseCmdCallback(DATA,A,B) 1
+#define mtclEvalParseStrCallback(DATA,A,B,X) 1
+#define mtclEvalParseCmdCallback(DATA,A,B,X) 1
 #define mtclEvalParseWordEndCallback(DATA) 1
 #define mtclEvalParseStmtEndCallback(DATA) 1
 #define mtclEvalParseParenErrCallback(D,P)
@@ -61,7 +60,7 @@
 
 void mtclEvalParse(const char *text,void *extraData) {
   
-#line 65 "tmp/mtclEvalParse.c"
+#line 64 "tmp/mtclEvalParse.c"
 static const char _parse_actions[] = {
 	0, 1, 1, 1, 2, 1, 4, 1, 
 	5, 1, 17, 1, 18, 1, 19, 1, 
@@ -354,7 +353,7 @@ static const int parse_en_m_sqrbrack = 8;
 static const int parse_en_main = 9;
 
 
-#line 272 "eval.rl"
+#line 308 "eval.rl"
   
   struct {
     int cs;
@@ -363,13 +362,13 @@ static const int parse_en_main = 9;
   } fsm;
   
   
-#line 367 "tmp/mtclEvalParse.c"
+#line 366 "tmp/mtclEvalParse.c"
 	{
 	 fsm.cs = parse_start;
 	 fsm.top = 0;
 	}
 
-#line 280 "eval.rl"
+#line 316 "eval.rl"
   
   fsm.p=text;
   fsm.pe=text+strlen(text);
@@ -383,7 +382,7 @@ static const int parse_en_main = 9;
   bool quoteParenErr=false;
   
   
-#line 387 "tmp/mtclEvalParse.c"
+#line 386 "tmp/mtclEvalParse.c"
 	{
 	int _klen;
 	unsigned int _trans;
@@ -511,7 +510,12 @@ _match:
   DEBUG_VAL("===========w",mStart,mEnd);
 
   if(mStart<mEnd) { //APPEND_WORD
-    if(!mtclEvalParsePartCallback(extraData,mStart,mEnd)) {
+    char *x=(char*)malloc(mEnd-mStart+1);
+	sprintf(x,"%.*s",mEnd-mStart,mStart);
+    bool r=mtclEvalParseStrCallback(extraData,mStart,mEnd,x);
+    free(x);
+	
+    if(!r) {
       {( fsm.p)++; goto _out; }
     }
   }
@@ -522,13 +526,13 @@ _match:
 }
 	break;
 	case 7:
-#line 55 "eval.rl"
+#line 60 "eval.rl"
 	{
   DEBUG_MARK("- - sub:a",( fsm.p));
 }
 	break;
 	case 8:
-#line 59 "eval.rl"
+#line 64 "eval.rl"
 	{
   DEBUG_MARK("- - sub:b",( fsm.p));
 
@@ -537,7 +541,7 @@ _match:
 }
 	break;
 	case 9:
-#line 66 "eval.rl"
+#line 71 "eval.rl"
 	{
   DEBUG_MARK("- - - var:a",( fsm.p));
 
@@ -545,12 +549,17 @@ _match:
 }
 	break;
 	case 10:
-#line 72 "eval.rl"
+#line 77 "eval.rl"
 	{
   DEBUG_VAL("===========v",mStart,mEnd);
 
   if(mStart<mEnd) { //APPEND_WORD
-    if(!mtclEvalParsePartCallback(extraData,mStart,mEnd)) {
+    char *x=(char*)malloc(mEnd-mStart+1);
+	sprintf(x,"%.*s",mEnd-mStart,mStart);
+    bool r=mtclEvalParseStrCallback(extraData,mStart,mEnd,x);
+    free(x);
+	
+    if(!r) {
       {( fsm.p)++; goto _out; }
     }
   }
@@ -566,16 +575,23 @@ _match:
   DEBUG_MARK("- - - var:b",( fsm.p));
   DEBUG_VAL("==========vv",a,b);
 
-  if(!mtclEvalParseVarCallback(extraData,a,b)) { //APPEND_WORD_VAR
-    runErr=true;
-    {( fsm.p)++; goto _out; }
+  {
+    char *x=(char*)malloc(6+b-a+1);
+	sprintf(x,"set {%.*s}",b-a,a);
+    bool r=mtclEvalParseCmdCallback(extraData,a,b,x);
+    free(x);
+	
+    if(!r) { //APPEND_WORD_CMD
+      runErr=true;
+      {( fsm.p)++; goto _out; }
+    }
   }
-
+  
   wStart=( fsm.p);
 }
 	break;
 	case 11:
-#line 100 "eval.rl"
+#line 117 "eval.rl"
 	{
   DEBUG_MARK("- - - cmd:a",( fsm.p));
 
@@ -583,7 +599,7 @@ _match:
 }
 	break;
 	case 12:
-#line 106 "eval.rl"
+#line 123 "eval.rl"
 	{
   const char *a=wStart+1;
   const char *b=( fsm.p)-1;
@@ -593,21 +609,32 @@ _match:
   DEBUG_VAL("==========cc",a,b);
 
   if(mStart<mEnd) { //APPEND_WORD
-    if(!mtclEvalParsePartCallback(extraData,mStart,mEnd)) {
+    char *x=(char*)malloc(mEnd-mStart+1);
+	sprintf(x,"%.*s",mEnd-mStart,mStart);
+    bool r=mtclEvalParseStrCallback(extraData,mStart,mEnd,x);
+    free(x);
+	
+    if(!r) {
       {( fsm.p)++; goto _out; }
     }
   }
-   
-  if(!mtclEvalParseCmdCallback(extraData,a,b)) { //APPEND_WORD_CMD
-    runErr=true;
-    {( fsm.p)++; goto _out; }
+  {
+    char *x=(char*)malloc(b-a+1);
+	sprintf(x,"%.*s",b-a,a);
+    bool r=mtclEvalParseCmdCallback(extraData,a,b,x);
+    free(x);
+	
+    if(!r) { //APPEND_WORD_CMD
+      runErr=true;
+      {( fsm.p)++; goto _out; }
+    }
   }
   
   wStart=( fsm.p);
 }
 	break;
 	case 13:
-#line 128 "eval.rl"
+#line 156 "eval.rl"
 	{
   DEBUG_MARK("- - - qstr:a",( fsm.p));
 
@@ -616,7 +643,7 @@ _match:
 }
 	break;
 	case 14:
-#line 135 "eval.rl"
+#line 163 "eval.rl"
 	{
   DEBUG_MARK("- - - qstr:b",( fsm.p));
 
@@ -624,7 +651,7 @@ _match:
 }
 	break;
 	case 15:
-#line 142 "eval.rl"
+#line 170 "eval.rl"
 	{
   DEBUG_MARK("- - - bstr:a",( fsm.p));
 
@@ -632,7 +659,7 @@ _match:
 }
 	break;
 	case 16:
-#line 148 "eval.rl"
+#line 176 "eval.rl"
 	{
   const char *a=wStart+1;
   const char *b=( fsm.p)-1;
@@ -640,25 +667,34 @@ _match:
   DEBUG_MARK("- - - bstr:b",( fsm.p));
   DEBUG_VAL("==========bb",a,b);
 
-  if(!mtclEvalParsePartCallback(extraData,a,b)) { //APPEND_WORD
-    {( fsm.p)++; goto _out; }
-  }
-
+  // if(!mtclEvalParseStrCallback(extraData,a,b)) { //APPEND_WORD
+  //   fbreak;
+  // }
+  
+    char *x=(char*)malloc(b-a+1);
+	sprintf(x,"%.*s",b-a,a);
+    bool r=mtclEvalParseStrCallback(extraData,a,b,x);
+    free(x);
+	
+    if(!r) {
+      {( fsm.p)++; goto _out; }
+    }
+	
   wStart=( fsm.p);
   mStart=( fsm.p);
 }
 	break;
 	case 17:
-#line 163 "eval.rl"
+#line 200 "eval.rl"
 	{  
   DEBUG_MARK("- - - str_char:b",( fsm.p));
 
-  wStart=( fsm.p);
+  wStart=( fsm.p); //what was this for?
   mEnd=( fsm.p);
 }
 	break;
 	case 18:
-#line 170 "eval.rl"
+#line 207 "eval.rl"
 	{  
   DEBUG_MARK("- - - str_qchar:b",( fsm.p));
 
@@ -667,36 +703,36 @@ _match:
 }
 	break;
 	case 20:
-#line 181 "eval.rl"
+#line 218 "eval.rl"
 	{{
 { fsm.stack[ fsm.top++] =  fsm.cs;  fsm.cs = 7; goto _again;}}}
 	break;
 	case 21:
-#line 181 "eval.rl"
+#line 218 "eval.rl"
 	{{ fsm.cs =  fsm.stack[-- fsm.top]; {
 }goto _again;}}
 	break;
 	case 22:
-#line 182 "eval.rl"
+#line 219 "eval.rl"
 	{{
 { fsm.stack[ fsm.top++] =  fsm.cs;  fsm.cs = 8; goto _again;}}}
 	break;
 	case 23:
-#line 182 "eval.rl"
+#line 219 "eval.rl"
 	{{ fsm.cs =  fsm.stack[-- fsm.top]; {
 }goto _again;}}
 	break;
 	case 24:
-#line 184 "eval.rl"
+#line 221 "eval.rl"
 	{{
 { fsm.stack[ fsm.top++] =  fsm.cs;  fsm.cs = 7; goto _again;}}}
 	break;
 	case 25:
-#line 185 "eval.rl"
+#line 222 "eval.rl"
 	{{
 { fsm.stack[ fsm.top++] =  fsm.cs;  fsm.cs = 8; goto _again;}}}
 	break;
-#line 700 "tmp/mtclEvalParse.c"
+#line 736 "tmp/mtclEvalParse.c"
 		}
 	}
 
@@ -736,7 +772,12 @@ _again:
   DEBUG_VAL("===========w",mStart,mEnd);
 
   if(mStart<mEnd) { //APPEND_WORD
-    if(!mtclEvalParsePartCallback(extraData,mStart,mEnd)) {
+    char *x=(char*)malloc(mEnd-mStart+1);
+	sprintf(x,"%.*s",mEnd-mStart,mStart);
+    bool r=mtclEvalParseStrCallback(extraData,mStart,mEnd,x);
+    free(x);
+	
+    if(!r) {
       {( fsm.p)++; goto _out; }
     }
   }
@@ -747,7 +788,7 @@ _again:
 }
 	break;
 	case 8:
-#line 59 "eval.rl"
+#line 64 "eval.rl"
 	{
   DEBUG_MARK("- - sub:b",( fsm.p));
 
@@ -756,12 +797,17 @@ _again:
 }
 	break;
 	case 10:
-#line 72 "eval.rl"
+#line 77 "eval.rl"
 	{
   DEBUG_VAL("===========v",mStart,mEnd);
 
   if(mStart<mEnd) { //APPEND_WORD
-    if(!mtclEvalParsePartCallback(extraData,mStart,mEnd)) {
+    char *x=(char*)malloc(mEnd-mStart+1);
+	sprintf(x,"%.*s",mEnd-mStart,mStart);
+    bool r=mtclEvalParseStrCallback(extraData,mStart,mEnd,x);
+    free(x);
+	
+    if(!r) {
       {( fsm.p)++; goto _out; }
     }
   }
@@ -777,16 +823,23 @@ _again:
   DEBUG_MARK("- - - var:b",( fsm.p));
   DEBUG_VAL("==========vv",a,b);
 
-  if(!mtclEvalParseVarCallback(extraData,a,b)) { //APPEND_WORD_VAR
-    runErr=true;
-    {( fsm.p)++; goto _out; }
+  {
+    char *x=(char*)malloc(6+b-a+1);
+	sprintf(x,"set {%.*s}",b-a,a);
+    bool r=mtclEvalParseCmdCallback(extraData,a,b,x);
+    free(x);
+	
+    if(!r) { //APPEND_WORD_CMD
+      runErr=true;
+      {( fsm.p)++; goto _out; }
+    }
   }
-
+  
   wStart=( fsm.p);
 }
 	break;
 	case 12:
-#line 106 "eval.rl"
+#line 123 "eval.rl"
 	{
   const char *a=wStart+1;
   const char *b=( fsm.p)-1;
@@ -796,21 +849,32 @@ _again:
   DEBUG_VAL("==========cc",a,b);
 
   if(mStart<mEnd) { //APPEND_WORD
-    if(!mtclEvalParsePartCallback(extraData,mStart,mEnd)) {
+    char *x=(char*)malloc(mEnd-mStart+1);
+	sprintf(x,"%.*s",mEnd-mStart,mStart);
+    bool r=mtclEvalParseStrCallback(extraData,mStart,mEnd,x);
+    free(x);
+	
+    if(!r) {
       {( fsm.p)++; goto _out; }
     }
   }
-   
-  if(!mtclEvalParseCmdCallback(extraData,a,b)) { //APPEND_WORD_CMD
-    runErr=true;
-    {( fsm.p)++; goto _out; }
+  {
+    char *x=(char*)malloc(b-a+1);
+	sprintf(x,"%.*s",b-a,a);
+    bool r=mtclEvalParseCmdCallback(extraData,a,b,x);
+    free(x);
+	
+    if(!r) { //APPEND_WORD_CMD
+      runErr=true;
+      {( fsm.p)++; goto _out; }
+    }
   }
   
   wStart=( fsm.p);
 }
 	break;
 	case 14:
-#line 135 "eval.rl"
+#line 163 "eval.rl"
 	{
   DEBUG_MARK("- - - qstr:b",( fsm.p));
 
@@ -818,7 +882,7 @@ _again:
 }
 	break;
 	case 16:
-#line 148 "eval.rl"
+#line 176 "eval.rl"
 	{
   const char *a=wStart+1;
   const char *b=( fsm.p)-1;
@@ -826,30 +890,39 @@ _again:
   DEBUG_MARK("- - - bstr:b",( fsm.p));
   DEBUG_VAL("==========bb",a,b);
 
-  if(!mtclEvalParsePartCallback(extraData,a,b)) { //APPEND_WORD
-    {( fsm.p)++; goto _out; }
-  }
-
+  // if(!mtclEvalParseStrCallback(extraData,a,b)) { //APPEND_WORD
+  //   fbreak;
+  // }
+  
+    char *x=(char*)malloc(b-a+1);
+	sprintf(x,"%.*s",b-a,a);
+    bool r=mtclEvalParseStrCallback(extraData,a,b,x);
+    free(x);
+	
+    if(!r) {
+      {( fsm.p)++; goto _out; }
+    }
+	
   wStart=( fsm.p);
   mStart=( fsm.p);
 }
 	break;
 	case 17:
-#line 163 "eval.rl"
+#line 200 "eval.rl"
 	{  
   DEBUG_MARK("- - - str_char:b",( fsm.p));
 
-  wStart=( fsm.p);
+  wStart=( fsm.p); //what was this for?
   mEnd=( fsm.p);
 }
 	break;
 	case 19:
-#line 177 "eval.rl"
+#line 214 "eval.rl"
 	{
   quoteParenErr=true;
 }
 	break;
-#line 853 "tmp/mtclEvalParse.c"
+#line 926 "tmp/mtclEvalParse.c"
 		}
 	}
 	}
@@ -857,7 +930,7 @@ _again:
 	_out: {}
 	}
 
-#line 293 "eval.rl"
+#line 329 "eval.rl"
   if(runErr) {
     mtclEvalParseRunErrCallback(extraData,fsm.p);
   } else if(fsm.top != 0 || quoteParenErr) {

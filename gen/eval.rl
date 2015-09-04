@@ -42,7 +42,12 @@ action wordEnd {
   DEBUG_VAL("===========w",mStart,mEnd);
 
   if(mStart<mEnd) { //APPEND_WORD
-    if(!mtclEvalParsePartCallback(extraData,mStart,mEnd)) {
+    char *x=(char*)malloc(mEnd-mStart+1);
+	sprintf(x,"%.*s",mEnd-mStart,mStart);
+    bool r=mtclEvalParseStrCallback(extraData,mStart,mEnd,x);
+    free(x);
+	
+    if(!r) {
       fbreak;
     }
   }
@@ -73,7 +78,12 @@ action varEnd {
   DEBUG_VAL("===========v",mStart,mEnd);
 
   if(mStart<mEnd) { //APPEND_WORD
-    if(!mtclEvalParsePartCallback(extraData,mStart,mEnd)) {
+    char *x=(char*)malloc(mEnd-mStart+1);
+	sprintf(x,"%.*s",mEnd-mStart,mStart);
+    bool r=mtclEvalParseStrCallback(extraData,mStart,mEnd,x);
+    free(x);
+	
+    if(!r) {
       fbreak;
     }
   }
@@ -89,11 +99,18 @@ action varEnd {
   DEBUG_MARK("- - - var:b",fpc);
   DEBUG_VAL("==========vv",a,b);
 
-  if(!mtclEvalParseVarCallback(extraData,a,b)) { //APPEND_WORD_VAR
-    runErr=true;
-    fbreak;
+  {
+    char *x=(char*)malloc(6+b-a+1);
+	sprintf(x,"set {%.*s}",b-a,a);
+    bool r=mtclEvalParseCmdCallback(extraData,a,b,x);
+    free(x);
+	
+    if(!r) { //APPEND_WORD_CMD
+      runErr=true;
+      fbreak;
+    }
   }
-
+  
   wStart=fpc;
 }
 
@@ -112,14 +129,25 @@ action cmdEnd {
   DEBUG_VAL("==========cc",a,b);
 
   if(mStart<mEnd) { //APPEND_WORD
-    if(!mtclEvalParsePartCallback(extraData,mStart,mEnd)) {
+    char *x=(char*)malloc(mEnd-mStart+1);
+	sprintf(x,"%.*s",mEnd-mStart,mStart);
+    bool r=mtclEvalParseStrCallback(extraData,mStart,mEnd,x);
+    free(x);
+	
+    if(!r) {
       fbreak;
     }
   }
-   
-  if(!mtclEvalParseCmdCallback(extraData,a,b)) { //APPEND_WORD_CMD
-    runErr=true;
-    fbreak;
+  {
+    char *x=(char*)malloc(b-a+1);
+	sprintf(x,"%.*s",b-a,a);
+    bool r=mtclEvalParseCmdCallback(extraData,a,b,x);
+    free(x);
+	
+    if(!r) { //APPEND_WORD_CMD
+      runErr=true;
+      fbreak;
+    }
   }
   
   wStart=fpc;
@@ -152,10 +180,19 @@ action braceEnd {
   DEBUG_MARK("- - - bstr:b",fpc);
   DEBUG_VAL("==========bb",a,b);
 
-  if(!mtclEvalParsePartCallback(extraData,a,b)) { //APPEND_WORD
-    fbreak;
-  }
-
+  // if(!mtclEvalParseStrCallback(extraData,a,b)) { //APPEND_WORD
+  //   fbreak;
+  // }
+  
+    char *x=(char*)malloc(b-a+1);
+	sprintf(x,"%.*s",b-a,a);
+    bool r=mtclEvalParseStrCallback(extraData,a,b,x);
+    free(x);
+	
+    if(!r) {
+      fbreak;
+    }
+	
   wStart=fpc;
   mStart=fpc;
 }
@@ -237,9 +274,8 @@ postpop {
 #endif
 
 #ifdef MTCL_EVAL_PARSE_TEST
-#define mtclEvalParsePartCallback(DATA,A,B) 1
-#define mtclEvalParseVarCallback(DATA,A,B) 1
-#define mtclEvalParseCmdCallback(DATA,A,B) 1
+#define mtclEvalParseStrCallback(DATA,A,B,X) 1
+#define mtclEvalParseCmdCallback(DATA,A,B,X) 1
 #define mtclEvalParseWordEndCallback(DATA) 1
 #define mtclEvalParseStmtEndCallback(DATA) 1
 #define mtclEvalParseParenErrCallback(D,P)

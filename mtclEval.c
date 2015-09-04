@@ -20,16 +20,16 @@ struct mtclEvalInfo {
   int retcode;
 };
 
-void mtclEvalAppendCurWord(struct mtclEvalInfo *info,
-                            const char *a,const char *b) {
-  size_t m=(b-a);
+void mtclEvalAppendCurWord(struct mtclEvalInfo *info,const char *x) {
+  size_t m=strlen(x);
   size_t n=info->curWord?strlen(info->curWord):0;
   info->curWord=(char*)realloc(info->curWord,n+m+1);
-  memcpy(&info->curWord[n],a,m);
+  memcpy(&info->curWord[n],x,m);
   info->curWord[n+m]='\0';
 }
 
-bool mtclEvalParsePartCallback(void *data,const char *a,const char *b) {
+bool mtclEvalParseStrCallback(void *data,const char *a,const char *b,
+                               const char *x) {
   //on receiving part of a word
 #ifdef MTCL_EVAL_DEBUG
   printf("%.*s",(int)(b-a),a);
@@ -37,66 +37,30 @@ bool mtclEvalParsePartCallback(void *data,const char *a,const char *b) {
   struct mtclEvalInfo *info;
   info=(struct mtclEvalInfo*)data;
 
-  mtclEvalAppendCurWord(info,a,b);
+  mtclEvalAppendCurWord(info,x);
   info->retcode=MTCL_OK; //probably not necessary
 #endif
 
   return true;
 }
 
-bool mtclEvalParseVarCallback(void *data,const char *a,const char *b) {
-  //on receiving a var part of a word
-#ifdef MTCL_EVAL_DEBUG
-  printf("${%.*s}",(int)(b-a),a);
-#else
-  struct mtclEvalInfo *info;
-  info=(struct mtclEvalInfo*)data;
 
-  size_t tmpLen=b-a;
-  char *tmp=(char*)malloc(tmpLen+1);
-  memcpy(tmp,a,tmpLen);
-  tmp[tmpLen]='\0';
-
-  struct mtclVar *pv=mtclGetVar(info->i,tmp,NULL);
-
-  if(!pv) {
-    snprintf(info->errbuf,1024,"No such variable '%s'",tmp);
-    mtclSetResult(info->i,info->errbuf);
-    info->retcode=MTCL_ERR;
-    return false;
-  }
-
-  mtclEvalAppendCurWord(info,pv->val,pv->val+strlen(pv->val));
-  free(tmp);
-  info->retcode=MTCL_OK; //probably not necessary
-#endif
-
-  return true;
-}
-
-bool mtclEvalParseCmdCallback(void *data,const char *a,const char *b) {
+bool mtclEvalParseCmdCallback(void *data,const char *a,const char *b,
+                              const char *x) {
   //on receiving a cmd part of a word
 #ifdef MTCL_EVAL_DEBUG
   printf("[%.*s]",(int)(b-a),a);
 #else
   struct mtclEvalInfo *info;
   info=(struct mtclEvalInfo*)data;
-
-  size_t tmpLen=b-a;
-  char *tmp=(char*)malloc(tmpLen+1);
-  memcpy(tmp,a,tmpLen);
-  tmp[tmpLen]='\0';
-
-  info->retcode=mtclEval(info->i,tmp);
-  free(tmp);
+  info->retcode=mtclEval(info->i,x);
 
   //on return/break/continue status it must stop evaluating
   if(info->retcode != MTCL_OK) {
     return false;
   }
 
-  mtclEvalAppendCurWord(info,info->i->result,
-                         info->i->result+strlen(info->i->result));
+  mtclEvalAppendCurWord(info,info->i->result);
 #endif
 
   return true;

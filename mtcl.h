@@ -53,6 +53,7 @@ extern "C" {
 #endif
 
   void mtclInitInterp(struct mtclInterp *i);
+  void mtclUninitInterp(struct mtclInterp *i);
   void mtclSetResult(struct mtclInterp *i, const char *s);
   int mtclSetVar(struct mtclInterp *i, const char *name, const char *val);
   int mtclSetUpvar(struct mtclInterp *i, const char *name, const char *varName);
