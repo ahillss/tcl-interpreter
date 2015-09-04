@@ -68,7 +68,7 @@ int main(int argc, char **argv) {
   // evalFile(&i,"tests/b.tcl");
   // runREPL(&i);
 
-
+  mtclUninitInterp(&i);
 #if defined(_MSC_VER) && defined(_DEBUG)
   system("pause");
 #endif

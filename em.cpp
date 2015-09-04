@@ -8,6 +8,7 @@ mtclInterpWrapper::mtclInterpWrapper() {
 }
 
 mtclInterpWrapper::~mtclInterpWrapper() {
+  mtclUninitInterp(&i);
 }
 
 std::string mtclInterpWrapper::eval(std::string text) {

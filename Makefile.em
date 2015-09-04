@@ -12,4 +12,4 @@ all: $(srcs) $(OUTPUT)
 
 $(OUTPUT): $(srcs) $(hdrs)
 	@mkdir -p $(@D)
-	$(CC) $(CPPFLAGS) $(srcs) --std=c++11 --bind -o $(OUTPUT) -s EXPORTED_FUNCTIONS="['_mtclInitInterp','_mtclRegisterCoreCommands','_mtclEval']" 
+	$(CC) $(CPPFLAGS) $(srcs) --std=c++11 --bind -o $(OUTPUT) -s EXPORTED_FUNCTIONS="['_mtclInitInterp','_mtclUninitInterp','_mtclRegisterCoreCommands','_mtclEval']" 

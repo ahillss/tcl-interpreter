@@ -13,9 +13,48 @@ void mtclInitInterp(struct mtclInterp *i) {
 }
 
 void mtclUninitInterp(struct mtclInterp *i) {
-
   struct mtclCallFrame *cf=i->callframe;
-  struct mtclCmd *cmds=i->commands;
+  struct mtclCmd *cmd=i->commands;
+
+  //free callframes
+  while(cf) {
+    struct mtclCallFrame *cfParent=cf->parent;
+    struct mtclVar *var=cf->vars;
+    struct mtclUpvar *upvar=cf->upvars;
+
+    //free vars
+    while(var) {
+      struct mtclVar *varNext=var->next;
+      free(var->name);
+      free(var->val);
+      free(var);
+      var=varNext;
+    }
+
+    //free upvars
+    while(upvar) {
+      struct mtclUpvar *upvarNext=upvar->next;
+      free(upvar->name);
+      free(upvar->varName);
+      free(upvar);
+      upvar=upvarNext;
+    }
+
+    //
+    free(cf);
+    cf=cfParent;
+  }
+
+  //free commands
+  while(cmd) {
+    struct mtclCmd *cmdNext=cmd->next;
+    free(cmd->name);
+    free(cmd->privdata);
+    free(cmd);
+    cmd=cmdNext;
+  }
+
+  //free result
   free(i->result);
 }
 

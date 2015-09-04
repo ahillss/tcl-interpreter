@@ -58,8 +58,10 @@ extern "C" {
   int mtclSetVar(struct mtclInterp *i, const char *name, const char *val);
   int mtclSetUpvar(struct mtclInterp *i, const char *name, const char *varName);
 
-  int mtclRegisterCommand(struct mtclInterp *i, const char *name, mtclCmdFunc f, void *privdata);
-  int mtclCommandCallProc(struct mtclInterp *i, int argc, char **argv, const void *pd);
+  int mtclRegisterCommand(struct mtclInterp *i, const char *name,
+                          mtclCmdFunc f, void *privdata);
+  int mtclCommandCallProc(struct mtclInterp *i, int argc, char **argv,
+                          const void *pd);
   struct mtclCmd *mtclGetCommand(struct mtclInterp *i, const char *name);
   struct mtclVar *mtclGetVar(struct mtclInterp *i, const char *name,
                              const char *val);

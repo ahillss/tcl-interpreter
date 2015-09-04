@@ -31,26 +31,37 @@ for {set i 3} {< $i 5} {incr i} {
 
 puts "expr answer is [expr {+ 2 * 3 / 9 4}]"
 
+proc foo {a b c} {
+  return "$a $b $c";
+}
+
+foo 1 2 3
+
       </script>
 	  <script type="text/javascript">
-var instance;
+
 var inputArea;
 var outputArea;
+
 function onStart() {
   inputArea=document.getElementById("input");
-  outputArea=document.getElementById("output");
   inputArea.value=document.getElementById("test.tcl").text;
+  
+  outputArea=document.getElementById("output");
+  
   Module['print'] = function(text) { outputArea.value+=text+"\n";};
   Module['printErr'] = function(text) { outputArea.value+=text+"\n";};
-  instance = new Module.mtclInterpWrapper();
-  instance.eval(document.getElementById("common.tcl").text);
 
   
   
 }
 function onRun() {
   outputArea.value="";
-  instance.eval(inputArea.value);
+  var instance = new Module.mtclInterpWrapper();
+  instance.eval(document.getElementById("common.tcl").text);
+  var result=instance.eval(inputArea.value);
+  instance.delete();
+  outputArea.value+="> "+result+"\n"
 }
 	 </script>
   </head>
